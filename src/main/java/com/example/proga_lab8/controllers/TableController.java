@@ -76,7 +76,6 @@ public class TableController extends BaseController {
 //        for (int i = 0; i < 100; ++i) {
 //            data.add(new CityAndGovernor(i+1, "Москва", "10,30", LocalDate.of(1941, Month.DECEMBER, 10), 1512L, 12421L, 512, 199, 1, 1, 1, 1, "Крутой чел", LocalDate.of(2000, Month.APRIL, 12)));
 //        }
-
         for (Map.Entry<Integer, City> entry : nikolaususFX.getClient().getTable().entrySet()) {
             City city = entry.getValue();
             data.add(new CityAndGovernor(city.getId(), city.getName(), city.getCoordinates(), city.getCreationDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),

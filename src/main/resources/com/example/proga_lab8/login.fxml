@@ -37,12 +37,12 @@
             <Separator prefWidth="200.0" GridPane.rowIndex="1" />
             <Separator prefWidth="200.0" GridPane.rowIndex="3" />
             <Separator prefWidth="200.0" GridPane.rowIndex="5" />
-            <PasswordField fx:id="password" prefHeight="46.0" prefWidth="606.0" promptText="Пароль" GridPane.rowIndex="4">
+            <PasswordField fx:id="password" prefHeight="46.0" prefWidth="606.0" promptText="Пароль" text="123456" GridPane.rowIndex="4">
                <font>
                   <Font size="20.0" />
                </font>
             </PasswordField>
-            <TextField fx:id="login" promptText="Логин" GridPane.rowIndex="2">
+            <TextField fx:id="login" promptText="Логин" text="nikolausus" GridPane.rowIndex="2">
                <font>
                   <Font size="20.0" />
                </font>

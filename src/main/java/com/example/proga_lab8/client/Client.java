@@ -1,5 +1,8 @@
 package com.example.proga_lab8.client;
 
+import com.example.proga_lab8.NikolaususFX;
+import com.example.proga_lab8.controllers.FakeHandler;
+import com.example.proga_lab8.controllers.MainMenuController;
 import com.example.proga_lab8.my_programm.CustomFileReader;
 import com.example.proga_lab8.my_programm.enums.Climate;
 import com.example.proga_lab8.my_programm.enums.StandardOfLiving;
@@ -7,6 +10,7 @@ import com.example.proga_lab8.my_programm.obj.City;
 import com.example.proga_lab8.my_programm.obj.Human;
 import com.example.proga_lab8.server.api.BaseApi;
 import com.example.proga_lab8.server.api.UserApi;
+import javafx.event.ActionEvent;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.JSONObject;
@@ -33,11 +37,16 @@ public class Client {
     private ArrayList<String> messages;
     private Hashtable<Integer, City> table = new Hashtable<>();
 
+    private NikolaususFX nikolaususFX;
+    private Date lastAsk = new Date();
+
+
     public Hashtable<Integer, City> getTable() {
         return table;
     }
 
-    public Client() {
+    public Client(NikolaususFX nikolaususFX) {
+        this.nikolaususFX = nikolaususFX;
         messages = new ArrayList<>();
         scanner = new Scanner(System.in);
 
@@ -114,68 +123,76 @@ public class Client {
         while (run) {
             try {
                 Thread.sleep(10);
-            } catch (Exception e) {
+            } catch (Exception e) {}
 
-            }
+            if (login != null && password != null) {
 
-            if (login != null && password != null && messages.size() > 0) {
-                this.connectToTheServer();
-                try {
-                    String message = messages.get(0);
-                    System.out.println(message);
-                    if (message.strip().equals("exit")) {
-                        System.out.println("Завершаем работу без вопросов");
-                        System.exit(0);
-                    } else if (message.strip().contains("execute_script ")) {
-                        ArrayList<String> blacklist = new ArrayList<>();
-                        blacklist.add(message.split("\s")[1]);
-                        get_command(message.strip(), blacklist);
+                if (new Date().getTime() - lastAsk.getTime() > 3000) {
+                    messages.add("show");
+                    lastAsk = new Date();
+                }
+
+                if (messages.size() > 0) {
+                    this.connectToTheServer();
+                    try {
+                        String message = messages.get(0);
+                        if (message.strip().equals("exit")) {
+                            System.out.println("Завершаем работу без вопросов");
+                            System.exit(0);
+                        } else if (message.strip().contains("execute_script ")) {
+                            ArrayList<String> blacklist = new ArrayList<>();
+                            blacklist.add(message.split("\s")[1]);
+                            get_command(message.strip(), blacklist);
 //                    for (String s : this.messages) {System.out.println(s + "?");}
-                    } else {
-                        writer.write(message + " " + login + " " + password + "\n");
-                        writer.flush();
+                        } else {
+                            writer.write(message + " " + login + " " + password + "\n");
+                            writer.flush();
 
-                        CompletableFuture<String> waitMessageFromServer = CompletableFuture.supplyAsync(() -> wait_new_message(reader));
+                            CompletableFuture<String> waitMessageFromServer = CompletableFuture.supplyAsync(() -> wait_new_message(reader));
 
-                        Date c_date = new Date();
-                        while (!waitMessageFromServer.isDone()) {
-                            if (new Date().getTime() - c_date.getTime() > 3000) {
-                                System.out.println("Превышено время ожидания ответа от сервера");
-                            }
-                        }
-
-                        String answer = waitMessageFromServer.get();
-                        if (answer != null) {
-                            System.out.print(answer);
-
-                            try {
-                                Object o = new JSONParser().parse(answer);
-                                JSONObject j = (JSONObject) o;
-                                JSONArray ja = (JSONArray) j.get("city");
-                                table.clear();
-                                for (Object obj : ja) {
-                                    JSONObject jo = (JSONObject) obj;
-//                                    System.out.println(jo);
-                                    Human gov = null;
-                                    if (jo.get("Governor") != null) {
-                                        Date zti = new Date();
-                                        gov = new Human(1, new Timestamp(zti.getTime()), "чёрт");
-                                    }
-                                    table.put(Math.toIntExact((Long) jo.get("id")), new City(Math.toIntExact((Long) jo.get("id")), (String) jo.get("name"), (String) jo.get("coordinates"), (long)jo.get("area"), (Long) jo.get("population"), Math.toIntExact((Long) jo.get("metersAboveSeaLevel")), Math.toIntExact((Long) jo.get("carCode")), Climate.getById(Math.toIntExact((Long) jo.get("Climate"))), StandardOfLiving.getById(Math.toIntExact((Long) jo.get("StandardOfLiving"))), gov, Math.toIntExact((Long) jo.get("creator_id"))));
+                            Date c_date = new Date();
+                            while (!waitMessageFromServer.isDone()) {
+                                if (new Date().getTime() - c_date.getTime() > 3000) {
+                                    System.out.println("Превышено время ожидания ответа от сервера");
                                 }
-//                                System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                                System.out.println(table.size());
-                            } catch (Exception e) {
-                                e.printStackTrace();
                             }
 
+                            String answer = waitMessageFromServer.get();
+                            if (answer != null) {
+                                System.out.print(answer);
+
+                                try {
+                                    Object o = new JSONParser().parse(answer);
+                                    JSONObject j = (JSONObject) o;
+                                    JSONArray ja = (JSONArray) j.get("city");
+                                    table.clear();
+                                    for (Object obj : ja) {
+                                        JSONObject jo = (JSONObject) obj;
+//                                    System.out.println(jo);
+                                        Human gov = null;
+                                        if (jo.get("Governor") != null) {
+                                            Date zti = new Date();
+                                            gov = new Human(1, new Timestamp(zti.getTime()), "чёрт");
+                                        }
+                                        table.put(Math.toIntExact((Long) jo.get("id")), new City(Math.toIntExact((Long) jo.get("id")), (String) jo.get("name"), (String) jo.get("coordinates"), (long) jo.get("area"), (Long) jo.get("population"), Math.toIntExact((Long) jo.get("metersAboveSeaLevel")), Math.toIntExact((Long) jo.get("carCode")), Climate.getById(Math.toIntExact((Long) jo.get("Climate"))), StandardOfLiving.getById(Math.toIntExact((Long) jo.get("StandardOfLiving"))), gov, Math.toIntExact((Long) jo.get("creator_id"))));
+                                    }
+                                    if (nikolaususFX.cur_scene.equals("menu")) {
+                                        nikolaususFX.mainMenuController.update_button.fireEvent(new ActionEvent());
+//                                        nikolaususFX.showTable();
+
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
                         }
+                        messages.remove(0);
+                    } catch (Exception e) {
+                        System.out.println("Сломалися");
+//                    e.printStackTrace();
+//                    System.exit(1);
                     }
-                    messages.remove(0);
-                } catch (Exception e) {
-                    System.out.println("Сломалися");
-                    e.printStackTrace();
-                    System.exit(1);
                 }
             }
         }

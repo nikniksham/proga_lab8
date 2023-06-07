@@ -37,12 +37,15 @@ public class NikolaususFX extends Application {
     private Parent loginView;
     private Parent mainMenuView;
     private Parent tableView;
+    public MainMenuController mainMenuController;
     private Stage primaryStage;
     private Client client;
+    public String cur_scene = "login";
+    public boolean need_to_update = true;
 
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         this.primaryStage = stage;
 
         primaryStage.setTitle("Клиент?");
@@ -71,6 +74,7 @@ public class NikolaususFX extends Application {
             loginController.setNikolaususFX(this);
             Scene scene = new Scene(loginView);
             primaryStage.setScene(scene);
+            cur_scene = "login";
             primaryStage.show();
         } catch (Exception e) {
             e.printStackTrace();
@@ -81,11 +85,14 @@ public class NikolaususFX extends Application {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("mainMenu.fxml"));
             mainMenuView = loader.load();
-            MainMenuController mainMenuController = loader.getController();
+            mainMenuController = loader.getController();
             mainMenuController.setNikolaususFX(this);
             mainMenuController.nickname.setText(client.getLogin());
             Scene scene = new Scene(mainMenuView);
             primaryStage.setScene(scene);
+            mainMenuController.drawCities();
+            need_to_update = false;
+            cur_scene = "menu";
             primaryStage.show();
         } catch (Exception e) {
             e.printStackTrace();
@@ -101,6 +108,7 @@ public class NikolaususFX extends Application {
             Scene scene = new Scene(tableView);
             primaryStage.setScene(scene);
             tableController.loadTable();
+            cur_scene = "table";
             primaryStage.show();
         } catch (Exception e) {
             e.printStackTrace();
@@ -120,7 +128,7 @@ class localClient implements Runnable {
 
     @Override
     public void run() {
-        Client client = new Client();
+        Client client = new Client(nikolaususFX);
         nikolaususFX.setClient(client);
         client.start(); // javascript:document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate = 3;
     }
