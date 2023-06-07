@@ -386,8 +386,9 @@ public class Manager {
 //                strings.add("          "+city.getGovernor().getBirthday().getMonthValue()+",");
 //                strings.add("          "+city.getGovernor().getBirthday().getDayOfMonth());
 //                strings.add("        ],");
-                strings.add("        \"" + city.getGovernor().getBirthday() + "\"");
+                strings.add("        \"" + city.getGovernor().getId() + "\"");
                 strings.add("        \"" + city.getGovernor().getName() + "\"");
+                strings.add("        \"" + city.getGovernor().getBirthday() + "\"");
                 strings.add("      ]");
             } else {
                 strings.add("      \"Governor\": " + null);

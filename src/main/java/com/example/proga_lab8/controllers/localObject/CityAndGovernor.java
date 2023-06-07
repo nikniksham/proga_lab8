@@ -23,9 +23,9 @@ public class CityAndGovernor {
         this.climate_id = new SimpleIntegerProperty(climate_id);
         this.area = new SimpleLongProperty(area);
         this.population = new SimpleLongProperty(population);
-        this.governor_id = new SimpleIntegerProperty(governor_id);
+        this.governor_id = (governor_id != null) ? new SimpleIntegerProperty(governor_id) : null;
+        this.governor_name = (governor_name != null) ? new SimpleStringProperty(governor_name) : null;
         this.city_name = new SimpleStringProperty(city_name);
-        this.governor_name = new SimpleStringProperty(governor_name);
         this.birthdate = birthdate;
         this.coordinates = new SimpleStringProperty(coordinates);
         this.creation_date = creation_date;

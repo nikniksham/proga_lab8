@@ -1,8 +1,15 @@
 package com.example.proga_lab8.client;
 
 import com.example.proga_lab8.my_programm.CustomFileReader;
+import com.example.proga_lab8.my_programm.enums.Climate;
+import com.example.proga_lab8.my_programm.enums.StandardOfLiving;
+import com.example.proga_lab8.my_programm.obj.City;
+import com.example.proga_lab8.my_programm.obj.Human;
 import com.example.proga_lab8.server.api.BaseApi;
 import com.example.proga_lab8.server.api.UserApi;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -11,18 +18,25 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 public class Client {
-    private String login;
-    private String password;
+    private String login = null;
+    private String password = null;
     Socket clientSocket;
     private Scanner scanner;
     private BufferedReader reader;
     private BufferedWriter writer;
     private boolean run = true;
     private ArrayList<String> messages;
+    private Hashtable<Integer, City> table = new Hashtable<>();
+
+    public Hashtable<Integer, City> getTable() {
+        return table;
+    }
+
     public Client() {
         messages = new ArrayList<>();
         scanner = new Scanner(System.in);
@@ -40,6 +54,17 @@ public class Client {
 
 //        this.login = "nikolausus";
 //        this.password = codeToSHA256("123456");
+
+//        for (int i = 0; i < 201; i += 40) {
+//            for (int j = 0; j < 201; j += 40) {
+//                messages.add("create  {\"lafs\", ["+i+", "+j+"], 124214, 2142, 22, 41, 1, 1}");
+//            }
+//        }
+        messages.add("show");
+    }
+
+    public String getLogin() {
+        return login;
     }
 
     public void logout() {
@@ -87,13 +112,17 @@ public class Client {
     }
     public void start() {
         while (run) {
-            if (login != null && password != null) {
-                if (messages.size() == 0) {
-//                    messages.add(scanner.nextLine());
-                }
+            try {
+                Thread.sleep(10);
+            } catch (Exception e) {
+
+            }
+
+            if (login != null && password != null && messages.size() > 0) {
                 this.connectToTheServer();
                 try {
                     String message = messages.get(0);
+                    System.out.println(message);
                     if (message.strip().equals("exit")) {
                         System.out.println("Завершаем работу без вопросов");
                         System.exit(0);
@@ -118,12 +147,35 @@ public class Client {
                         String answer = waitMessageFromServer.get();
                         if (answer != null) {
                             System.out.print(answer);
+
+                            try {
+                                Object o = new JSONParser().parse(answer);
+                                JSONObject j = (JSONObject) o;
+                                JSONArray ja = (JSONArray) j.get("city");
+                                table.clear();
+                                for (Object obj : ja) {
+                                    JSONObject jo = (JSONObject) obj;
+//                                    System.out.println(jo);
+                                    Human gov = null;
+                                    if (jo.get("Governor") != null) {
+                                        Date zti = new Date();
+                                        gov = new Human(1, new Timestamp(zti.getTime()), "чёрт");
+                                    }
+                                    table.put(Math.toIntExact((Long) jo.get("id")), new City(Math.toIntExact((Long) jo.get("id")), (String) jo.get("name"), (String) jo.get("coordinates"), (long)jo.get("area"), (Long) jo.get("population"), Math.toIntExact((Long) jo.get("metersAboveSeaLevel")), Math.toIntExact((Long) jo.get("carCode")), Climate.getById(Math.toIntExact((Long) jo.get("Climate"))), StandardOfLiving.getById(Math.toIntExact((Long) jo.get("StandardOfLiving"))), gov, Math.toIntExact((Long) jo.get("creator_id"))));
+                                }
+//                                System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                                System.out.println(table.size());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
                         }
                     }
                     messages.remove(0);
                 } catch (Exception e) {
                     System.out.println("Сломалися");
-//                e.printStackTrace();
+                    e.printStackTrace();
+                    System.exit(1);
                 }
             }
         }

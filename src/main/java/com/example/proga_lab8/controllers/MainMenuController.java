@@ -15,6 +15,7 @@ public class MainMenuController extends BaseController {
     public Button toTable_button;
     public Button logout_button;
     public Label menuLabel;
+    public Label nickname;
 
     public void logout(ActionEvent event) {
         try {

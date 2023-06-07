@@ -44,7 +44,6 @@ public class NikolaususFX extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         this.primaryStage = stage;
-        System.out.println(stage);
 
         primaryStage.setTitle("Клиент?");
 
@@ -84,6 +83,7 @@ public class NikolaususFX extends Application {
             mainMenuView = loader.load();
             MainMenuController mainMenuController = loader.getController();
             mainMenuController.setNikolaususFX(this);
+            mainMenuController.nickname.setText(client.getLogin());
             Scene scene = new Scene(mainMenuView);
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -100,6 +100,7 @@ public class NikolaususFX extends Application {
             tableController.setNikolaususFX(this);
             Scene scene = new Scene(tableView);
             primaryStage.setScene(scene);
+            tableController.loadTable();
             primaryStage.show();
         } catch (Exception e) {
             e.printStackTrace();
