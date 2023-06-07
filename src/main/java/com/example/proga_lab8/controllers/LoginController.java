@@ -14,28 +14,36 @@ import javafx.stage.Stage;
 
 import java.util.Objects;
 
-public class LoginController {
-    public Label enterLabel;
+public class LoginController extends BaseController{
+    public Label loginLabel;
     public PasswordField password;
     public TextField login;
-    public Button enter_button;
-    private NikolaususFX nikolaususFX;
-
-    public void setNikolaususFX(NikolaususFX nikolaususFX) {
-        this.nikolaususFX = nikolaususFX;
-    }
+    public Button login_button;
+    public Button register_button;
 
     public void login(ActionEvent event) {
         try {
-//            Parent tableViewParent = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
-//            Scene tableViewScene = new Scene(tableViewParent);
-//
-//            Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-//
-//            window.setScene(tableViewScene);
-//            window.show();
-//            nikolaususFX.
-            nikolaususFX.showMainMenu();
+            String result = nikolaususFX.getClient().tryToLogin(login.getText(), password.getText());
+//            System.out.println(login.toString() + " " + password.toString());
+            if (result.equals("ok")) {
+                nikolaususFX.showMainMenu();
+            } else {
+                this.callAlert(result, "try again");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void register(ActionEvent event) { // доделать
+        try {
+            String result = nikolaususFX.getClient().tryToRegister(login.getText(), password.getText());
+//            System.out.println(login.toString() + " " + password.toString());
+            if (result.equals("ok")) {
+                nikolaususFX.showMainMenu();
+            } else {
+                this.callAlert(result, "try again");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

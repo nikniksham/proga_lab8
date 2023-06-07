@@ -38,48 +38,28 @@ public class NikolaususFX extends Application {
     private Parent mainMenuView;
     private Parent tableView;
     private Stage primaryStage;
+    private Client client;
 
 
     @Override
     public void start(Stage stage) throws Exception {
         this.primaryStage = stage;
         System.out.println(stage);
-//        Parent tableView = FXMLLoader.load(getClass().getResource("login.fxml"));
-//        tableView = FXMLLoader.load(getClass().getResource("login.fxml"));
-
 
         primaryStage.setTitle("Клиент?");
 
         InputStream iconStream = getClass().getResourceAsStream("/images/zolotie_ruki.png");
         Image image = new Image(iconStream);
         primaryStage.getIcons().add(image);
-
-//        Scene scene = new Scene(tableView);
-//        primaryStage.setScene(scene);
         primaryStage.setResizable(false);
-//        primaryStage.show();
+
         this.showLogin();
-//        TestController testController = fxmlLoader.getController();
-//        testController.cities.setVgap(1);
-//        testController.cities.setPadding(new Insets(10, 10, 10, 10));
-////        testController.cities.setGridLinesVisible(true);
-//        for (int i = 0; i < 300; ++i) {
-//            Button btn = new Button("Город номер " + (i + 1));
-//            btn.setOnAction(e -> {
-//                testController.callCity(((Button)e.getSource()).getText());
-//
-//            });
-////            btn.setStyle("-fx-arc-width: 200");
-////            btn.setMinWidth(250);
-////            btn.setMaxWidth(250);
-//            testController.cities.add(btn, 0, i);
-//        }
 
-//        testController.cities.add(new Button("1"), 0, 0);
-//        testController.cities.add(new Button("2"), 0, 1);
-//        testController.cities.add(new Button("3"), 0, 2);
+        clients.submit(new localClient(this));
+    }
 
-        clients.submit(new localClient());
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public void showLogin() {
@@ -126,16 +106,21 @@ public class NikolaususFX extends Application {
         }
     }
 
+    public Client getClient() {
+        return client;
+    }
 }
 
 class localClient implements Runnable {
-    public localClient() {
-
+    private NikolaususFX nikolaususFX;
+    public localClient(NikolaususFX nikolaususFX) {
+        this.nikolaususFX = nikolaususFX;
     }
 
     @Override
     public void run() {
         Client client = new Client();
+        nikolaususFX.setClient(client);
         client.start(); // javascript:document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate = 3;
     }
 }

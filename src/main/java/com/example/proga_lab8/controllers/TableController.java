@@ -20,7 +20,7 @@ import java.time.Month;
 import java.time.Period;
 import java.util.ResourceBundle;
 
-public class TableController implements Initializable {
+public class TableController extends BaseController implements Initializable {
 
     @FXML private TableView<CityAndGovernor> tableView;
     @FXML private TableColumn<CityAndGovernor, Integer> city_idColumn;
@@ -46,8 +46,6 @@ public class TableController implements Initializable {
     private Button delete_button;
     @FXML
     private Button mainMenu_button;
-    private NikolaususFX nikolaususFX;
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -67,10 +65,6 @@ public class TableController implements Initializable {
         birthdateColumn.setCellValueFactory(new PropertyValueFactory<CityAndGovernor, LocalDate>("birthdate"));
 
         tableView.setItems(this.getData());
-    }
-
-    public void setNikolaususFX(NikolaususFX nikolaususFX) {
-        this.nikolaususFX = nikolaususFX;
     }
 
     public ObservableList<CityAndGovernor> getData() {

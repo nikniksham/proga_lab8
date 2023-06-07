@@ -2,6 +2,7 @@ package com.example.proga_lab8.server;
 
 import com.example.proga_lab8.my_programm.CustomFileReader;
 import com.example.proga_lab8.my_programm.Manager;
+import com.example.proga_lab8.server.api.BaseApi;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import com.example.proga_lab8.server.api.UserApi;
@@ -89,7 +90,9 @@ class Client implements Runnable {
             if (messageList.length >= 3) {
                 StringBuilder answer = new StringBuilder("Неправильный логин или пароль\n");
                 int userStatus = UserApi.login(messageList[messageList.length - 2], messageList[messageList.length - 1]);
-                if (userStatus >= 0) {
+                if (messageList[0].equals("login")) {
+                    answer.append(userStatus >= 0 ? "Успех" : "Неправильный логин или пароль");
+                } else if (userStatus >= 0) {
                     int userId = UserApi.getUserId(messageList[messageList.length - 2]);
 
                     StringBuilder command = new StringBuilder();

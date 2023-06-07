@@ -10,19 +10,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-public class MainMenuController {
+public class MainMenuController extends BaseController {
 
     public Button toTable_button;
     public Button logout_button;
     public Label menuLabel;
-    private NikolaususFX nikolaususFX;
-
-    public void setNikolaususFX(NikolaususFX nikolaususFX) {
-        this.nikolaususFX = nikolaususFX;
-    }
 
     public void logout(ActionEvent event) {
         try {
+            nikolaususFX.getClient().logout();
             nikolaususFX.showLogin();
         } catch (Exception e) {
             e.printStackTrace();

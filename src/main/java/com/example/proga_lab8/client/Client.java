@@ -1,6 +1,8 @@
 package com.example.proga_lab8.client;
 
 import com.example.proga_lab8.my_programm.CustomFileReader;
+import com.example.proga_lab8.server.api.BaseApi;
+import com.example.proga_lab8.server.api.UserApi;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -36,8 +38,34 @@ public class Client {
 //            System.out.println("Добро пожаловать в систему " + login);
 //        }
 
-        this.login = "nikolausus";
-        this.password = codeToSHA256("123456");
+//        this.login = "nikolausus";
+//        this.password = codeToSHA256("123456");
+    }
+
+    public void logout() {
+        this.login = null;
+        this.password = null;
+        this.messages.clear();
+    }
+
+    public String tryToLogin(String login, String password) {
+        int result = UserApi.login(login, codeToSHA256(password));
+        if (result >= 0) {
+            this.login = login;
+            this.password =codeToSHA256(password);
+            return "ok";
+        } else {
+            return "Wrong login or password";
+        }
+    }
+
+    public String tryToRegister(String login, String password) {
+        String result = UserApi.register(login, codeToSHA256(password));
+        if (result.equals("ok")) {
+            this.login = login;
+            this.password = codeToSHA256(password);
+        }
+        return result;
     }
 
     private void connectToTheServer() {
@@ -59,42 +87,44 @@ public class Client {
     }
     public void start() {
         while (run) {
-            if (messages.size() == 0) {
-                messages.add(scanner.nextLine());
-            }
-            this.connectToTheServer();
-            try {
-                String message = messages.get(0);
-                if (message.strip().equals("exit")) {
-                    System.out.println("Завершаем работу без вопросов");
-                    System.exit(0);
-                } else if (message.strip().contains("execute_script ")) {
-                    ArrayList<String> blacklist = new ArrayList<>();
-                    blacklist.add(message.split("\s")[1]);
-                    get_command(message.strip(), blacklist);
+            if (login != null && password != null) {
+                if (messages.size() == 0) {
+//                    messages.add(scanner.nextLine());
+                }
+                this.connectToTheServer();
+                try {
+                    String message = messages.get(0);
+                    if (message.strip().equals("exit")) {
+                        System.out.println("Завершаем работу без вопросов");
+                        System.exit(0);
+                    } else if (message.strip().contains("execute_script ")) {
+                        ArrayList<String> blacklist = new ArrayList<>();
+                        blacklist.add(message.split("\s")[1]);
+                        get_command(message.strip(), blacklist);
 //                    for (String s : this.messages) {System.out.println(s + "?");}
-                } else {
-                    writer.write(message + " " + login + " " + password + "\n");
-                    writer.flush();
+                    } else {
+                        writer.write(message + " " + login + " " + password + "\n");
+                        writer.flush();
 
-                    CompletableFuture<String> waitMessageFromServer = CompletableFuture.supplyAsync(() -> wait_new_message(reader));
+                        CompletableFuture<String> waitMessageFromServer = CompletableFuture.supplyAsync(() -> wait_new_message(reader));
 
-                    Date c_date = new Date();
-                    while (!waitMessageFromServer.isDone()) {
-                        if (new Date().getTime() - c_date.getTime() > 3000) {
-                            System.out.println("Превышено время ожидания ответа от сервера");
+                        Date c_date = new Date();
+                        while (!waitMessageFromServer.isDone()) {
+                            if (new Date().getTime() - c_date.getTime() > 3000) {
+                                System.out.println("Превышено время ожидания ответа от сервера");
+                            }
+                        }
+
+                        String answer = waitMessageFromServer.get();
+                        if (answer != null) {
+                            System.out.print(answer);
                         }
                     }
-
-                    String answer = waitMessageFromServer.get();
-                    if (answer != null) {
-                        System.out.print(answer);
-                    }
-                }
-                messages.remove(0);
-            } catch (Exception e) {
-                System.out.println("Сломалися");
+                    messages.remove(0);
+                } catch (Exception e) {
+                    System.out.println("Сломалися");
 //                e.printStackTrace();
+                }
             }
         }
     }
