@@ -80,4 +80,29 @@ public class UserApi extends BaseApi {
 //        R_LOCK.unlock();
         return res;
     }
+
+    public static synchronized int getUserStatus(String login) {
+//        R_LOCK.lock();
+        String query = "select users.status from users where users.login = '"+login+"' limit 1";
+//        System.out.println(query);
+        int res = -1;
+        try {
+            con = DriverManager.getConnection(url, user, password);
+            stmt = con.createStatement();
+//            System.out.println(query);
+            rs = stmt.executeQuery(query);
+            rs.next();
+            res = rs.getInt(1);
+
+        } catch (Exception e) { // SQLException sqlEx
+//            sqlEx.printStackTrace();
+            e.printStackTrace();
+        } finally {
+            try { con.close(); } catch(Exception e) { /*can't do anything */ }
+            try { stmt.close(); } catch(Exception e) { /*can't do anything */ }
+            try { rs.close(); } catch(Exception e) { /*can't do anything */ }
+        }
+//        R_LOCK.unlock();
+        return res;
+    }
 }

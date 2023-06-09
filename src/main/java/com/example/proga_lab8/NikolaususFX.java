@@ -13,18 +13,16 @@ import javafx.stage.Stage;
 
 import java.io.*;
 import java.net.Socket;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class NikolaususFX extends Application {
-
-    public static void main(String[] args) {
-        Application.launch();
-    }
-
     private String login;
     private String password;
     Socket clientSocket;
@@ -42,7 +40,14 @@ public class NikolaususFX extends Application {
     private Client client;
     public String cur_scene = "login";
     public boolean need_to_update = true;
+    public String result_of_delete;
+    public String result_of_change;
+    public String result_of_create;
+    public DateFormat fmt = DateFormat.getDateTimeInstance (DateFormat.SHORT, DateFormat.MEDIUM, Locale.FRANCE);
 
+    public static void main(String[] args) {
+        Application.launch();
+    }
 
     @Override
     public void start(Stage stage) {
@@ -88,15 +93,31 @@ public class NikolaususFX extends Application {
             mainMenuController = loader.getController();
             mainMenuController.setNikolaususFX(this);
             mainMenuController.nickname.setText(client.getLogin());
+            mainMenuController.id.setText(client.getId());
             Scene scene = new Scene(mainMenuView);
             primaryStage.setScene(scene);
-            mainMenuController.drawCities();
+            mainMenuController.drawLines();
             need_to_update = false;
             cur_scene = "menu";
+            mainMenuController.drawCities();
             primaryStage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void loadAndThenShow() {
+        try {
+            Date dateNow = new Date();
+            while (new Date().getTime() - dateNow.getTime() < 1000) {
+                if (client.isActual) {
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        this.showMainMenu();
     }
 
     public void showTable() {

@@ -10,18 +10,18 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 
 import java.net.URL;
+import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Period;
 import java.time.ZoneId;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -73,12 +73,10 @@ public class TableController extends BaseController {
 
     public ObservableList<CityAndGovernor> getData() {
         ObservableList<CityAndGovernor> data = FXCollections.observableArrayList();
-//        for (int i = 0; i < 100; ++i) {
-//            data.add(new CityAndGovernor(i+1, "Москва", "10,30", LocalDate.of(1941, Month.DECEMBER, 10), 1512L, 12421L, 512, 199, 1, 1, 1, 1, "Крутой чел", LocalDate.of(2000, Month.APRIL, 12)));
-//        }
+
         for (Map.Entry<Integer, City> entry : nikolaususFX.getClient().getTable().entrySet()) {
             City city = entry.getValue();
-            data.add(new CityAndGovernor(city.getId(), city.getName(), city.getCoordinates(), city.getCreationDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+            data.add(new CityAndGovernor(city.getId(), city.getName(), city.getCoordinates(), nikolaususFX.fmt.format(city.getCreationDate()),
                     city.getArea(), city.getPopulation(), city.getMetersAboveSeaLevel(), city.getCarCode(), Climate.getIdByName(city.getClimate()),
                     StandardOfLiving.getIdByName(city.getStandardOfLiving()), city.getCreator_id(), null, null, null));
         }
@@ -87,15 +85,29 @@ public class TableController extends BaseController {
     }
 
     public void create() {
-
+        System.out.println("Открыть окошко создания");
     }
 
     public void change() {
-
+        System.out.println("Открыть окошко создание города (но только на изменение и если есть права) " + tableView.getSelectionModel().getSelectedItem().getCity_id());
     }
 
     public void delete() {
+//        System.out.println("Удалить город (но только если есть права) " + tableView.getSelectionModel().getSelectedItem().getCity_id());
+        nikolaususFX.getClient().add_message("remove_key " + tableView.getSelectionModel().getSelectedItem().getCity_id());
+        Date dateNow = new Date();
+        while (nikolaususFX.result_of_delete == null) {
+            try {
+                Thread.sleep(10);
+            } catch (Exception e) {}
 
+            if (new Date().getTime() - dateNow.getTime() > 1000) {
+                nikolaususFX.result_of_delete = "Сервер умер";
+            }
+        }
+        this.callAlert("Ответ", nikolaususFX.result_of_delete);
+        nikolaususFX.result_of_delete = null;
+        this.loadTable();
     }
 
     public void toMainMenu() {

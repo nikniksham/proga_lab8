@@ -26,7 +26,7 @@ public class LoginController extends BaseController{
             String result = nikolaususFX.getClient().tryToLogin(login.getText(), password.getText());
 //            System.out.println(login.toString() + " " + password.toString());
             if (result.equals("ok")) {
-                nikolaususFX.showMainMenu();
+                nikolaususFX.loadAndThenShow();
             } else {
                 this.callAlert(result, "try again");
             }
@@ -40,7 +40,7 @@ public class LoginController extends BaseController{
             String result = nikolaususFX.getClient().tryToRegister(login.getText(), password.getText());
 //            System.out.println(login.toString() + " " + password.toString());
             if (result.equals("ok")) {
-                nikolaususFX.showMainMenu();
+                nikolaususFX.loadAndThenShow();
             } else {
                 this.callAlert(result, "try again");
             }

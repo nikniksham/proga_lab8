@@ -9,10 +9,10 @@ import java.time.LocalDate;
 public class CityAndGovernor {
     private SimpleIntegerProperty city_id, creator_id, metersAboveSeaLevel, carCode, standardOfLiving_id,  climate_id, governor_id;
     private SimpleLongProperty area, population;
-    private SimpleStringProperty city_name, governor_name, coordinates;
-    private LocalDate creation_date, birthdate;
+    private SimpleStringProperty city_name, governor_name, coordinates, creation_date;
+    private LocalDate birthdate;
 
-    public CityAndGovernor(Integer city_id, String city_name, String coordinates, LocalDate creation_date, Long area, Long population,
+    public CityAndGovernor(Integer city_id, String city_name, String coordinates, String creation_date, Long area, Long population,
                            Integer metersAboveSeaLevel, Integer carCode, Integer climate_id, Integer standardOfLiving_id,
                            Integer creator_id, Integer governor_id, String governor_name, LocalDate birthdate) {
         this.city_id = new SimpleIntegerProperty(city_id);
@@ -28,7 +28,7 @@ public class CityAndGovernor {
         this.city_name = new SimpleStringProperty(city_name);
         this.birthdate = birthdate;
         this.coordinates = new SimpleStringProperty(coordinates);
-        this.creation_date = creation_date;
+        this.creation_date = new SimpleStringProperty(creation_date);
     }
 
     public int getCity_id() {
@@ -127,8 +127,8 @@ public class CityAndGovernor {
         return coordinates;
     }
 
-    public LocalDate getCreation_date() {
-        return creation_date;
+    public String getCreation_date() {
+        return creation_date.get();
     }
 
     public LocalDate getBirthdate() {
@@ -183,8 +183,8 @@ public class CityAndGovernor {
         this.coordinates.set(coordinates);
     }
 
-    public void setCreation_date(LocalDate creationDate) {
-        this.creation_date = creationDate;
+    public void setCreation_date(String creationDate) {
+        this.creation_date.set(creationDate);
     }
 
     public void setBirthdate(LocalDate birthdate) {

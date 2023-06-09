@@ -1,16 +1,12 @@
 package com.example.proga_lab8.client;
 
 import com.example.proga_lab8.NikolaususFX;
-import com.example.proga_lab8.controllers.FakeHandler;
-import com.example.proga_lab8.controllers.MainMenuController;
 import com.example.proga_lab8.my_programm.CustomFileReader;
 import com.example.proga_lab8.my_programm.enums.Climate;
 import com.example.proga_lab8.my_programm.enums.StandardOfLiving;
 import com.example.proga_lab8.my_programm.obj.City;
 import com.example.proga_lab8.my_programm.obj.Human;
-import com.example.proga_lab8.server.api.BaseApi;
 import com.example.proga_lab8.server.api.UserApi;
-import javafx.event.ActionEvent;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.JSONObject;
@@ -39,10 +35,17 @@ public class Client {
 
     private NikolaususFX nikolaususFX;
     private Date lastAsk = new Date();
-
+    public Integer userStatus;
+    public Integer userId;
+    private boolean needUpdate = true;
+    public boolean isActual = false;
 
     public Hashtable<Integer, City> getTable() {
         return table;
+    }
+
+    public void add_message(String new_message) {
+        messages.add(new_message);
     }
 
     public Client(NikolaususFX nikolaususFX) {
@@ -76,9 +79,15 @@ public class Client {
         return login;
     }
 
+    public String getId() {
+        return userId.toString();
+    }
+
     public void logout() {
         this.login = null;
+        this.userId = null;
         this.password = null;
+        this.userStatus = null;
         this.messages.clear();
     }
 
@@ -86,7 +95,9 @@ public class Client {
         int result = UserApi.login(login, codeToSHA256(password));
         if (result >= 0) {
             this.login = login;
+            this.userId = UserApi.getUserId(login);
             this.password =codeToSHA256(password);
+            this.userStatus = UserApi.getUserStatus(login);
             return "ok";
         } else {
             return "Wrong login or password";
@@ -127,9 +138,15 @@ public class Client {
 
             if (login != null && password != null) {
 
+                isActual = false;
+
                 if (new Date().getTime() - lastAsk.getTime() > 3000) {
+                    needUpdate = true;
+                }
+                if (needUpdate) {
                     messages.add("show");
                     lastAsk = new Date();
+                    needUpdate = false;
                 }
 
                 if (messages.size() > 0) {
@@ -159,7 +176,6 @@ public class Client {
 
                             String answer = waitMessageFromServer.get();
                             if (answer != null) {
-                                System.out.print(answer);
 
                                 try {
                                     Object o = new JSONParser().parse(answer);
@@ -176,13 +192,14 @@ public class Client {
                                         }
                                         table.put(Math.toIntExact((Long) jo.get("id")), new City(Math.toIntExact((Long) jo.get("id")), (String) jo.get("name"), (String) jo.get("coordinates"), (long) jo.get("area"), (Long) jo.get("population"), Math.toIntExact((Long) jo.get("metersAboveSeaLevel")), Math.toIntExact((Long) jo.get("carCode")), Climate.getById(Math.toIntExact((Long) jo.get("Climate"))), StandardOfLiving.getById(Math.toIntExact((Long) jo.get("StandardOfLiving"))), gov, Math.toIntExact((Long) jo.get("creator_id"))));
                                     }
-                                    if (nikolaususFX.cur_scene.equals("menu")) {
-                                        nikolaususFX.mainMenuController.update_button.fireEvent(new ActionEvent());
-//                                        nikolaususFX.showTable();
-
-                                    }
+                                    isActual = true;
                                 } catch (Exception e) {
-                                    e.printStackTrace();
+//                                    e.printStackTrace();
+                                    String[] messages = answer.split(" ");
+                                    if (messages[messages.length - 1].strip().equals("remove")) {
+                                        nikolaususFX.result_of_delete = answer.substring(0, answer.length() - 7);
+                                        needUpdate = true;
+                                    }
                                 }
 
                             }
