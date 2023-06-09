@@ -35,4 +35,15 @@ public enum Climate {
             default: return 0;
         }
     }
+
+    public static Climate getClimateByString(String name) {
+        switch (name) {
+            case "TROPICAL_SAVANNA": return TROPICAL_SAVANNA;
+            case "HUMIDSUBTROPICAL": return HUMIDSUBTROPICAL;
+            case "STEPPE": return STEPPE;
+            case "SUBARCTIC": return SUBARCTIC;
+            case "DESERT": return DESERT;
+            default: throw new RuntimeException("Такого климата нет");
+        }
+    }
 }

@@ -48,6 +48,16 @@ public class Client {
         messages.add(new_message);
     }
 
+    public City get_city_by_id(int cityId) {
+        for (Map.Entry<Integer, City> entry : nikolaususFX.getClient().getTable().entrySet()) {
+            if (entry.getKey().equals(cityId)) {
+                return entry.getValue();
+            }
+        }
+
+        return null;
+    }
+
     public Client(NikolaususFX nikolaususFX) {
         this.nikolaususFX = nikolaususFX;
         messages = new ArrayList<>();
@@ -197,7 +207,13 @@ public class Client {
 //                                    e.printStackTrace();
                                     String[] messages = answer.split(" ");
                                     if (messages[messages.length - 1].strip().equals("remove")) {
-                                        nikolaususFX.result_of_delete = answer.substring(0, answer.length() - 7);
+                                        nikolaususFX.result_of_delete = answer.substring(0, answer.length() - 8);
+                                        needUpdate = true;
+                                    } else if (messages[messages.length - 1].strip().equals("create")) {
+                                        nikolaususFX.result_of_create = answer.substring(0, answer.length() - 8);
+                                        needUpdate = true;
+                                    } else if (messages[messages.length - 1].strip().equals("update")) {
+                                        nikolaususFX.result_of_change = answer.substring(0, answer.length() - 8);
                                         needUpdate = true;
                                     }
                                 }

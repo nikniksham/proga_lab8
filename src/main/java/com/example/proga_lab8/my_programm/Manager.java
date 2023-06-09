@@ -93,7 +93,7 @@ public class Manager {
                "print_field_descending_governor : вывести значения поля governor всех элементов в порядке убывания\n" +
                "*Под {filename} подразумевается название файла\n" +
                "*Под {id} подразумевается id города в таблице\n" +
-               "*Под {element} подразумевается {<String>name, [<Integer>x, <Integer>y] <Long>area, <Long>population, <Integer>MASL, <Integer>carCode, <Integer>[1-5], <Integer>[1-5], [null/[<Integer>year, <Integer>month, <Integer>day, <String>name_gov]]}";
+               "*Под {element} подразумевается {<String>name, [<Integer>x, <Integer>y], <Long>area, <Long>population, <Integer>MASL, <Integer>carCode, <Integer>[1-5], <Integer>[1-5], [null/[<Integer>year, <Integer>month, <Integer>day, <String>name_gov]]}";
     }
 
     public String info() {
@@ -173,12 +173,12 @@ public class Manager {
             if (userStatus > 0 || userId == table.get(id).getCreator_id()) {
                 table.remove(id);
                 change_something = true;
-                return "Город удалён";
+                return "success " + "Город удалён";
             } else {
-                return "У вас недостаточно прав для этого";
+                return "error " + "У вас недостаточно прав для этого";
             }
         } else {
-            return "Не найден город с таким id";
+            return "error " + "Не найден город с таким id";
         }
     }
 

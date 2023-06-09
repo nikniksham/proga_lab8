@@ -44,6 +44,52 @@ public class City {
         this.creator_id = creator_id;
     }
 
+    public boolean inRange(String cur, long lower, long maximal) {
+        long cur_num = Long.parseLong(cur);
+        return cur_num >= lower && cur_num <= maximal;
+    }
+
+    public String setNewData(String name_p, String coordinates_p, String area_p, String population_p, String metersAboveSeaLevel_p, String carCode_p, String climate_p, String standardOfLiving_p) {
+        try {
+            if (name_p.equals("")) {
+                throw new RuntimeException("Имя города не должно быть null");
+            }
+            String[] coor = coordinates_p.split(", ");
+            if (coor.length != 2 || !inRange(coor[0], 0, 200) || !inRange(coor[1], 0, 200)) {
+                throw new RuntimeException("Координаты должны задаваться в формате [0; 200], [0; 200]");
+            }
+            if (Long.parseLong(area_p) <= 0) {
+                throw new RuntimeException("Площадь города должна быть больше 0");
+            }
+            if (Long.parseLong(population_p) < 0) {
+                throw new RuntimeException("Население города должно быть больше или равно 0");
+            }
+            Integer.parseInt(metersAboveSeaLevel_p);
+            if (!inRange(carCode_p, 1, 1000)) {
+                throw new RuntimeException("Код автомобиля должен быть в диапозоне [1; 1000]");
+            }
+            Climate.getClimateByString(climate_p);
+            StandardOfLiving.getStandardById(standardOfLiving_p);
+
+            this.setName(name_p);
+            this.setCoordinates(coordinates_p);
+            this.setArea(Long.parseLong(area_p));
+            this.setPopulation(Long.parseLong(population_p));
+            this.setMetersAboveSeaLevel(Integer.parseInt(metersAboveSeaLevel_p));
+            this.setCarCode(Integer.parseInt(carCode_p));
+            this.setClimate(Climate.getClimateByString(climate_p));
+            this.setStandardOfLiving(StandardOfLiving.getStandardById(standardOfLiving_p));
+
+        } catch (Exception e) {
+            return "error " + e.getMessage();
+        }
+
+        return "success " + this.getCommandFormat();
+    }
+
+    public String getCommandFormat() {
+        return "{" + '"' + this.name+ '"' + ", [" + this.coordinates + "], " + this.area + ", " + this.population + ", " + this.metersAboveSeaLevel + ", " + carCode + ", " + Climate.getIdByName(climate) + ", " + StandardOfLiving.getIdByName(standardOfLiving) + "}";
+    }
     public long get_num_for_srav() {
         return (area + population + metersAboveSeaLevel + carCode) * (climate == null ? 1 : Climate.getIdByName(climate)) * (standardOfLiving == null ? 1 : StandardOfLiving.getIdByName(standardOfLiving));
     }

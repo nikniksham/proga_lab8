@@ -89,7 +89,9 @@ public class TableController extends BaseController {
     }
 
     public void change() {
-        System.out.println("Открыть окошко создание города (но только на изменение и если есть права) " + tableView.getSelectionModel().getSelectedItem().getCity_id());
+        if (tableView.getSelectionModel().getSelectedItem() != null) {
+            System.out.println("Открыть окошко создание города (но только на изменение и если есть права) " + tableView.getSelectionModel().getSelectedItem().getCity_id());
+        }
     }
 
     public void delete() {
@@ -102,10 +104,10 @@ public class TableController extends BaseController {
             } catch (Exception e) {}
 
             if (new Date().getTime() - dateNow.getTime() > 1000) {
-                nikolaususFX.result_of_delete = "Сервер умер";
+                nikolaususFX.result_of_delete = "error " + "Сервер умер";
             }
         }
-        this.callAlert("Ответ", nikolaususFX.result_of_delete);
+        this.callAlert("Ответ", nikolaususFX.result_of_delete.substring(nikolaususFX.result_of_delete.split(" ")[0].length() + 1));
         nikolaususFX.result_of_delete = null;
         this.loadTable();
     }

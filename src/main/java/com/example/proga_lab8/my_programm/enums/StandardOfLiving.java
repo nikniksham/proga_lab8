@@ -37,4 +37,15 @@ public enum StandardOfLiving {
             default: return 0;
         }
     }
+
+    public static StandardOfLiving getStandardById(String name) {
+        switch (name) {
+            case "VERY_HIGH": return VERY_HIGH;
+            case "HIGH": return HIGH;
+            case "VERY_LOW": return VERY_LOW;
+            case "ULTRA_LOW": return ULTRA_LOW;
+            case "NIGHTMARE": return NIGHTMARE;
+            default: throw new RuntimeException("Нет такого уровня жизни");
+        }
+    }
 }

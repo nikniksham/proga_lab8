@@ -39,6 +39,7 @@ public class NikolaususFX extends Application {
     private Stage primaryStage;
     private Client client;
     public String cur_scene = "login";
+    public Scene scene;
     public boolean need_to_update = true;
     public String result_of_delete;
     public String result_of_change;
@@ -77,7 +78,7 @@ public class NikolaususFX extends Application {
             loginView = loader.load();
             LoginController loginController = loader.getController();
             loginController.setNikolaususFX(this);
-            Scene scene = new Scene(loginView);
+            scene = new Scene(loginView);
             primaryStage.setScene(scene);
             cur_scene = "login";
             primaryStage.show();
@@ -94,12 +95,16 @@ public class NikolaususFX extends Application {
             mainMenuController.setNikolaususFX(this);
             mainMenuController.nickname.setText(client.getLogin());
             mainMenuController.id.setText(client.getId());
-            Scene scene = new Scene(mainMenuView);
+            scene = new Scene(mainMenuView);
             primaryStage.setScene(scene);
             mainMenuController.drawLines();
             need_to_update = false;
             cur_scene = "menu";
             mainMenuController.drawCities();
+//            mainMenuController.editPane.setVisible(false);
+            mainMenuController.inputClimate.getItems().addAll("TROPICAL_SAVANNA", "HUMIDSUBTROPICAL", "STEPPE", "SUBARCTIC", "DESERT");
+            mainMenuController.inputStandardOfLiving.getItems().addAll("VERY_HIGH", "HIGH", "VERY_LOW", "ULTRA_LOW", "NIGHTMARE");
+            mainMenuController.editPane.setLayoutX(1315);
             primaryStage.show();
         } catch (Exception e) {
             e.printStackTrace();
@@ -126,7 +131,7 @@ public class NikolaususFX extends Application {
             tableView = loader.load();
             TableController tableController = loader.getController();
             tableController.setNikolaususFX(this);
-            Scene scene = new Scene(tableView);
+            scene = new Scene(tableView);
             primaryStage.setScene(scene);
             tableController.loadTable();
             cur_scene = "table";

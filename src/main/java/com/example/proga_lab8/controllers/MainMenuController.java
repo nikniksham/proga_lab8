@@ -16,7 +16,9 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -63,6 +65,22 @@ public class MainMenuController extends BaseController {
     public Button edit_button;
     public Button delete_button;
     public Label id;
+    public Pane mapUI;
+    public Pane editPane;
+    public Button back_button;
+    public Button delete_button2;
+    public TextField inputArea;
+    public TextField inputCoordinates;
+    public TextField inputPopulation;
+    public TextField inputMetersAboveSeaLevel;
+    public TextField inputCarCode;
+    public ChoiceBox inputClimate;
+    public ChoiceBox inputStandardOfLiving;
+    public Label outputId;
+    public Button save_button;
+    public TextField inputName;
+    public Label outputCreatorId;
+    public Label outputCreationDate;
 
     public void logout(ActionEvent event) {
         try {
@@ -106,10 +124,25 @@ public class MainMenuController extends BaseController {
             Circle circle = new Circle();
             circle.setCenterX(Integer.parseInt(city.getCoordinates().split(",")[0].strip()) * 2.57 + 60);
             circle.setCenterY(Integer.parseInt(city.getCoordinates().split(",")[1].strip()) * 2.57 + 60);
+            circle.setId("city_" + city.getId());
             circle.setRadius(city.getRadius());
 //            circle.setEffect(new BoxBlur(2, 2, 1));
+
             circle.setOnMousePressed(e ->  {
                 this.showCityInformation(city);
+                Timeline locTimeLine = new Timeline();
+                locTimeLine.getKeyFrames().addAll(
+                        new KeyFrame(Duration.ZERO,
+                                new KeyValue(circle.radiusProperty(), circle.getRadius())
+                        ),
+                        new KeyFrame(new Duration(50),
+                                new KeyValue(circle.radiusProperty(), circle.getRadius() * 1.3)
+                        ),
+                        new KeyFrame(new Duration(100),
+                                new KeyValue(circle.radiusProperty(), circle.getRadius())
+                        )
+                );
+                locTimeLine.play();
             });
 
             timeline.getKeyFrames().addAll(
@@ -127,7 +160,6 @@ public class MainMenuController extends BaseController {
             circle.setFill(city.getColor());
             risulki.getChildren().add(circle);
         }
-
         timeline.play();
     }
 
@@ -137,7 +169,36 @@ public class MainMenuController extends BaseController {
     }
 
     public void onEdit() {
+//        System.out.println(selectedCity);
+        City city = nikolaususFX.getClient().get_city_by_id(selectedCity);
+        if (city != null) {
 
+            inputName.setText(city.getName());
+            outputId.setText(city.getId().toString());
+            inputArea.setText(Long.toString(city.getArea()));
+            inputCoordinates.setText(city.getCoordinates());
+            inputPopulation.setText(city.getPopulation().toString());
+            inputMetersAboveSeaLevel.setText(city.getMetersAboveSeaLevel().toString());
+            inputCarCode.setText(Integer.toString(city.getCarCode()));
+            inputClimate.setValue(city.getClimate().toString());
+            inputStandardOfLiving.setValue(city.getStandardOfLiving().toString());
+            outputCreatorId.setText(city.getCreator_id().toString());
+            outputCreationDate.setText(nikolaususFX.fmt.format(city.getCreationDate()));
+
+            Timeline timeline = new Timeline();
+            timeline.getKeyFrames().addAll(
+                    new KeyFrame(Duration.ZERO,
+                            new KeyValue(mapUI.layoutXProperty(), 0)
+                    ),
+                    new KeyFrame(new Duration(250),
+                            new KeyValue(mapUI.layoutXProperty(), -1280)
+                    )
+            );
+            timeline.play();
+        } else {
+            callAlert("Ошибка", "Город с таким id был кем-то удалён");
+            this.nikolaususFX.showMainMenu();
+        }
     }
 
     public void onDelete() {
@@ -149,12 +210,83 @@ public class MainMenuController extends BaseController {
             } catch (Exception e) {}
 
             if (new Date().getTime() - dateNow.getTime() > 1000) {
-                nikolaususFX.result_of_delete = "Сервер умер";
+                nikolaususFX.result_of_delete = "error " + "Сервер умер";
             }
         }
-        this.callAlert("Ответ", nikolaususFX.result_of_delete);
+
+        if (nikolaususFX.result_of_delete.length() > 0 && nikolaususFX.result_of_delete.split(" ")[0].strip().equals("success")) {
+            for (Node c : risulki.getChildren().sorted()) {
+                if (c == null) {
+                    continue;
+                }
+                if (c.getId().equals("city_" + selectedCity)) {
+                    Circle circle = (Circle) c;
+                    Timeline timeline = new Timeline();
+                    timeline.getKeyFrames().addAll(
+                            new KeyFrame(Duration.ZERO,
+                                    new KeyValue(circle.radiusProperty(), circle.getRadius())
+                            ),
+                            new KeyFrame(new Duration(75),
+                                    new KeyValue(circle.radiusProperty(), circle.getRadius() / 2)
+                            ),
+                            new KeyFrame(new Duration(150),
+                                    new KeyValue(circle.radiusProperty(), 0)
+                            )
+                    );
+                    timeline.play();
+                    break;
+                }
+            }
+        }
+
+        this.callAlert("Ответ", nikolaususFX.result_of_delete.substring(nikolaususFX.result_of_delete.split(" ")[0].length() + 1));
         nikolaususFX.result_of_delete = null;
         nikolaususFX.showMainMenu();
+    }
+
+    public void onBack() {
+        Timeline timeline = new Timeline();
+        timeline.getKeyFrames().addAll(
+                new KeyFrame(Duration.ZERO,
+                        new KeyValue(mapUI.layoutXProperty(), -1280)
+                ),
+                new KeyFrame(new Duration(250),
+                        new KeyValue(mapUI.layoutXProperty(), 0)
+                )
+        );
+        timeline.play();
+    }
+
+    public void onSave() {
+//        System.out.println("Провести валидацию данных и сохранить изменения города " + selectedCity);
+
+        City city = nikolaususFX.getClient().get_city_by_id(selectedCity);
+
+        if (city != null) {
+            String res = city.setNewData(inputName.getText(), inputCoordinates.getText(), inputArea.getText(), inputPopulation.getText(), inputMetersAboveSeaLevel.getText(), inputCarCode.getText(), inputClimate.getValue().toString(), inputStandardOfLiving.getValue().toString());
+            if (res.split(" ")[0].strip().equals("success")) {
+                res = "update " + selectedCity + " " + res.substring(res.split(" ")[0].length() + 1);
+                nikolaususFX.getClient().add_message(res);
+                Date dateNow = new Date();
+                while (nikolaususFX.result_of_change == null) {
+                    try {
+                        Thread.sleep(10);
+                    } catch (Exception e) {}
+
+                    if (new Date().getTime() - dateNow.getTime() > 1000) {
+                        nikolaususFX.result_of_change = "error " + "Сервер умер";
+                    }
+                }
+                this.callAlert("Результат", nikolaususFX.result_of_change.substring(nikolaususFX.result_of_change.split(" ")[0].length() + 1));
+                nikolaususFX.result_of_change = null;
+                nikolaususFX.showMainMenu();
+            } else {
+                callAlert("Ошибка", res.substring(res.split(" ")[0].length() + 1));
+            }
+        } else {
+            callAlert("Ошибка", "Город с таким id был кем-то удалён");
+            this.nikolaususFX.showMainMenu();
+        }
     }
 
     public void showCityInformation(City city) {
@@ -166,7 +298,7 @@ public class MainMenuController extends BaseController {
                             new KeyValue(information.layoutXProperty(), 1280)
                     ),
                     new KeyFrame(new Duration(200),
-                            new KeyValue(information.layoutXProperty(), 797)
+                            new KeyValue(information.layoutXProperty(), 773)
                     )
             );
             timeline.play();
