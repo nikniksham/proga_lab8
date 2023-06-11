@@ -59,6 +59,28 @@ public class MainMenuController extends BaseController {
     public TextField inputName;
     public Label outputCreatorId;
     public Label outputCreationDate;
+    public Label propId;
+    public Label propArea;
+    public Label propCoords;
+    public Label propPopulation;
+    public Label propMASL;
+    public Label propCarCode;
+    public Label propClimate;
+    public Label propStandardOfLiving;
+    public Label propCreator;
+    public Label propCreationDate;
+    public Label propName;
+    public Label propName2;
+    public Label propId2;
+    public Label propArea2;
+    public Label propCoords2;
+    public Label propPopulation2;
+    public Label propMASL2;
+    public Label propCarCode2;
+    public Label propClimate2;
+    public Label propStandardOfLiving2;
+    public Label propCreator2;
+    public Label propCreationDate2;
 
     public void logout(ActionEvent event) {
         try {
@@ -303,5 +325,42 @@ public class MainMenuController extends BaseController {
             edit_button.setVisible(false);
         }
 //        city
+    }
+
+    public void setLocalization() {
+        propName.setText(nikolaususFX.nikiLocal.getText("propName"));
+        propId.setText(nikolaususFX.nikiLocal.getText("propId"));
+        propArea.setText(nikolaususFX.nikiLocal.getText("propArea"));
+        propCoords.setText(nikolaususFX.nikiLocal.getText("propCoords"));
+        propPopulation.setText(nikolaususFX.nikiLocal.getText("propPopulation"));
+        propMASL.setText(nikolaususFX.nikiLocal.getText("propMASL"));
+        propCarCode.setText(nikolaususFX.nikiLocal.getText("propCarCode"));
+        propClimate.setText(nikolaususFX.nikiLocal.getText("propClimate"));
+        propStandardOfLiving.setText(nikolaususFX.nikiLocal.getText("propStandardOfLiving"));
+        propCreator.setText(nikolaususFX.nikiLocal.getText("propCreator"));
+        propCreationDate.setText(nikolaususFX.nikiLocal.getText("propCreationDate"));
+
+        propName2.setText(nikolaususFX.nikiLocal.getText("propName"));
+        propId2.setText(nikolaususFX.nikiLocal.getText("propId"));
+        propArea2.setText(nikolaususFX.nikiLocal.getText("propArea"));
+        propCoords2.setText(nikolaususFX.nikiLocal.getText("propCoords"));
+        propPopulation2.setText(nikolaususFX.nikiLocal.getText("propPopulation"));
+        propMASL2.setText(nikolaususFX.nikiLocal.getText("propMASL"));
+        propCarCode2.setText(nikolaususFX.nikiLocal.getText("propCarCode"));
+        propClimate2.setText(nikolaususFX.nikiLocal.getText("propClimate"));
+        propStandardOfLiving2.setText(nikolaususFX.nikiLocal.getText("propStandardOfLiving"));
+        propCreator2.setText(nikolaususFX.nikiLocal.getText("propCreator"));
+        propCreationDate2.setText(nikolaususFX.nikiLocal.getText("propCreationDate"));
+
+        back_button.setText(nikolaususFX.nikiLocal.getText("buttonBack"));
+        delete_button.setText(nikolaususFX.nikiLocal.getText("buttonDelete"));
+        delete_button2.setText(nikolaususFX.nikiLocal.getText("buttonDelete"));
+        save_button.setText(nikolaususFX.nikiLocal.getText("buttonSave"));
+        logout_button.setText(nikolaususFX.nikiLocal.getText("buttonLogout"));
+        toTable_button.setText(nikolaususFX.nikiLocal.getText("buttonToTable"));
+        update_button.setText(nikolaususFX.nikiLocal.getText("buttonUpdate"));
+        edit_button.setText(nikolaususFX.nikiLocal.getText("buttonEdit"));
+
+        menuLabel.setText(nikolaususFX.nikiLocal.getText("labelMenu"));
     }
 }

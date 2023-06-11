@@ -35,8 +35,17 @@ public class LoginController extends BaseController{
         languageSelector.setItems(FXCollections.observableArrayList("ru", "ee", "uk", "es"));
         languageSelector.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             nikolaususFX.nikiLocal.locale = newValue.toString();
+            nikolaususFX.setNewDateFormat(newValue.toString());
             nikolaususFX.showLogin();
         });
+    }
+
+    public void setLocalization() {
+        loginLabel.setText(nikolaususFX.nikiLocal.getText("textEnter"));
+        login_button.setText(nikolaususFX.nikiLocal.getText("buttonLogin"));
+        register_button.setText(nikolaususFX.nikiLocal.getText("buttonRegister"));
+        password.setPromptText(nikolaususFX.nikiLocal.getText("fieldPassword"));
+        login.setPromptText(nikolaususFX.nikiLocal.getText("buttonLogin"));
     }
 
     public void login(ActionEvent event) {

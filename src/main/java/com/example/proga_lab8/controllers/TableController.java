@@ -38,6 +38,18 @@ public class TableController extends BaseController {
     public Label outputCreationDate;
     public Button save_button;
     public Pane editPane;
+    public Label propName;
+    public Label propId;
+    public Label propArea;
+    public Label propCoords;
+    public Label propPopulation;
+    public Label propMASL;
+    public Label propCarCode;
+    public Label propClimate;
+    public Label propStandardOfLiving;
+    public Label propCreator;
+    public Label propCreationDate;
+    public Label labelCity;
     @FXML private TableView<CityAndGovernor> tableView;
     @FXML private TableColumn<CityAndGovernor, Integer> city_idColumn;
     @FXML private TableColumn<CityAndGovernor, String> city_nameColumn;
@@ -95,6 +107,7 @@ public class TableController extends BaseController {
 
     public void onCreate() {
         needCreate = true;
+        delete_button2.setVisible(false);
         outputId.setText("?");
         outputCreatorId.setText(nikolaususFX.getClient().getId());
         outputCreationDate.setText("?");
@@ -112,6 +125,7 @@ public class TableController extends BaseController {
 
     public void onEdit() {
         needCreate = false;
+        delete_button2.setVisible(true);
         if (tableView.getSelectionModel().getSelectedItem() != null) {
             City city = nikolaususFX.getClient().get_city_by_id(tableView.getSelectionModel().getSelectedItem().getCity_id());
 
@@ -144,20 +158,23 @@ public class TableController extends BaseController {
 
     public void onDelete() {
 //        System.out.println("Удалить город (но только если есть права) " + tableView.getSelectionModel().getSelectedItem().getCity_id());
-        nikolaususFX.getClient().add_message("remove_key " + tableView.getSelectionModel().getSelectedItem().getCity_id());
-        Date dateNow = new Date();
-        while (nikolaususFX.result_of_delete == null) {
-            try {
-                Thread.sleep(10);
-            } catch (Exception e) {}
+        try {
+            nikolaususFX.getClient().add_message("remove_key " + tableView.getSelectionModel().getSelectedItem().getCity_id());
+            Date dateNow = new Date();
+            while (nikolaususFX.result_of_delete == null) {
+                try {
+                    Thread.sleep(10);
+                } catch (Exception e) {
+                }
 
-            if (new Date().getTime() - dateNow.getTime() > 1000) {
-                nikolaususFX.result_of_delete = "error " + "Сервер умер";
+                if (new Date().getTime() - dateNow.getTime() > 1000) {
+                    nikolaususFX.result_of_delete = "error " + "Сервер умер";
+                }
             }
-        }
-        this.callAlert("Ответ", nikolaususFX.result_of_delete.substring(nikolaususFX.result_of_delete.split(" ")[0].length() + 1));
-        nikolaususFX.result_of_delete = null;
-        this.loadTable();
+            this.callAlert("Ответ", nikolaususFX.result_of_delete.substring(nikolaususFX.result_of_delete.split(" ")[0].length() + 1));
+            nikolaususFX.result_of_delete = null;
+            this.loadTable();
+        } catch (Exception e) {}
     }
 
     public void toMainMenu() {
@@ -237,5 +254,27 @@ public class TableController extends BaseController {
     public void onDelete2() {
         this.onDelete();
         this.nikolaususFX.showTable();
+    }
+
+    public void setLocalization() {
+        propName.setText(nikolaususFX.nikiLocal.getText("propName"));
+        propId.setText(nikolaususFX.nikiLocal.getText("propId"));
+        propArea.setText(nikolaususFX.nikiLocal.getText("propArea"));
+        propCoords.setText(nikolaususFX.nikiLocal.getText("propCoords"));
+        propPopulation.setText(nikolaususFX.nikiLocal.getText("propPopulation"));
+        propMASL.setText(nikolaususFX.nikiLocal.getText("propMASL"));
+        propCarCode.setText(nikolaususFX.nikiLocal.getText("propCarCode"));
+        propClimate.setText(nikolaususFX.nikiLocal.getText("propClimate"));
+        propStandardOfLiving.setText(nikolaususFX.nikiLocal.getText("propStandardOfLiving"));
+        propCreator.setText(nikolaususFX.nikiLocal.getText("propCreator"));
+        propCreationDate.setText(nikolaususFX.nikiLocal.getText("propCreationDate"));
+
+        labelCity.setText(nikolaususFX.nikiLocal.getText("labelCity"));
+        back_button.setText(nikolaususFX.nikiLocal.getText("buttonBack"));
+        delete_button.setText(nikolaususFX.nikiLocal.getText("buttonDelete"));
+        save_button.setText(nikolaususFX.nikiLocal.getText("buttonSave"));
+        change_button.setText(nikolaususFX.nikiLocal.getText("buttonEdit"));
+        mainMenu_button.setText(nikolaususFX.nikiLocal.getText("buttonToMainMenu"));
+        create_button.setText(nikolaususFX.nikiLocal.getText("buttonCreate"));
     }
 }

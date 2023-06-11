@@ -58,27 +58,22 @@
                         <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label prefHeight="17.0" prefWidth="200.0" text="Название:">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
                         <Label fx:id="city_name" prefHeight="17.0" prefWidth="306.0" GridPane.columnIndex="1">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="17.0" prefWidth="200.0" text="id:" GridPane.rowIndex="1">
+                        <Label fx:id="propId" prefHeight="17.0" prefWidth="200.0" text="id:" GridPane.rowIndex="1">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="17.0" prefWidth="200.0" text="Площадь:" GridPane.rowIndex="2">
+                        <Label fx:id="propArea" prefHeight="17.0" prefWidth="200.0" text="Площадь:" GridPane.rowIndex="2">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="17.0" prefWidth="200.0" text="Координаты:" GridPane.rowIndex="3">
+                        <Label fx:id="propCoords" prefHeight="17.0" prefWidth="200.0" text="Координаты:" GridPane.rowIndex="3">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -98,37 +93,37 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="17.0" prefWidth="200.0" text="Население:" GridPane.rowIndex="4">
+                        <Label fx:id="propPopulation" prefHeight="17.0" prefWidth="200.0" text="Население:" GridPane.rowIndex="4">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="17.0" prefWidth="200.0" text="Высота:" GridPane.rowIndex="5">
+                        <Label fx:id="propMASL" prefHeight="17.0" prefWidth="200.0" text="Высота:" GridPane.rowIndex="5">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="17.0" prefWidth="200.0" text="Код авто:" GridPane.rowIndex="6">
+                        <Label fx:id="propCarCode" prefHeight="17.0" prefWidth="200.0" text="Код авто:" GridPane.rowIndex="6">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="17.0" prefWidth="200.0" text="Климат:" GridPane.rowIndex="7">
+                        <Label fx:id="propClimate" prefHeight="17.0" prefWidth="200.0" text="Климат:" GridPane.rowIndex="7">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="17.0" prefWidth="200.0" text="Уровень жизни:" GridPane.rowIndex="8">
+                        <Label fx:id="propStandardOfLiving" prefHeight="17.0" prefWidth="200.0" text="Уровень жизни:" GridPane.rowIndex="8">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="17.0" prefWidth="200.0" text="Создатель:" GridPane.rowIndex="9">
+                        <Label fx:id="propCreator" prefHeight="17.0" prefWidth="200.0" text="Создатель:" GridPane.rowIndex="9">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="17.0" prefWidth="200.0" text="Дата создания:" GridPane.rowIndex="10">
+                        <Label fx:id="propCreationDate" prefHeight="17.0" prefWidth="200.0" text="Дата создания:" GridPane.rowIndex="10">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -170,6 +165,11 @@
                         </Label>
                         <Button fx:id="edit_button" mnemonicParsing="false" onAction="#onEdit" prefHeight="25.0" prefWidth="145.0" text="Редактировать" GridPane.rowIndex="12" />
                         <Button fx:id="delete_button" mnemonicParsing="false" onAction="#onDelete" prefHeight="25.0" prefWidth="140.0" text="Удалить" GridPane.rowIndex="13" />
+                        <Label fx:id="propName" prefHeight="17.0" prefWidth="200.0" text="Название:">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
                      </children>
                   </GridPane>
                </children>
@@ -199,57 +199,57 @@
                         <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Label prefHeight="17.0" prefWidth="200.0" text="Название:">
+                        <Label fx:id="propName2" prefHeight="17.0" prefWidth="200.0" text="Название:">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="17.0" prefWidth="200.0" text="id:" GridPane.rowIndex="1">
+                        <Label fx:id="propId2" prefHeight="17.0" prefWidth="200.0" text="id:" GridPane.rowIndex="1">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="17.0" prefWidth="200.0" text="Площадь:" GridPane.rowIndex="2">
+                        <Label fx:id="propArea2" prefHeight="17.0" prefWidth="200.0" text="Площадь:" GridPane.rowIndex="2">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="17.0" prefWidth="200.0" text="Координаты:" GridPane.rowIndex="3">
+                        <Label fx:id="propCoords2" prefHeight="17.0" prefWidth="200.0" text="Координаты:" GridPane.rowIndex="3">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="17.0" prefWidth="200.0" text="Население:" GridPane.rowIndex="4">
+                        <Label fx:id="propPopulation2" prefHeight="17.0" prefWidth="200.0" text="Население:" GridPane.rowIndex="4">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="17.0" prefWidth="200.0" text="Высота:" GridPane.rowIndex="5">
+                        <Label fx:id="propMASL2" prefHeight="17.0" prefWidth="200.0" text="Высота:" GridPane.rowIndex="5">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="17.0" prefWidth="200.0" text="Код авто:" GridPane.rowIndex="6">
+                        <Label fx:id="propCarCode2" prefHeight="17.0" prefWidth="200.0" text="Код авто:" GridPane.rowIndex="6">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="17.0" prefWidth="200.0" text="Климат:" GridPane.rowIndex="7">
+                        <Label fx:id="propClimate2" prefHeight="17.0" prefWidth="200.0" text="Климат:" GridPane.rowIndex="7">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="17.0" prefWidth="200.0" text="Уровень жизни:" GridPane.rowIndex="8">
+                        <Label fx:id="propStandardOfLiving2" prefHeight="17.0" prefWidth="200.0" text="Уровень жизни:" GridPane.rowIndex="8">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="17.0" prefWidth="200.0" text="Создатель:" GridPane.rowIndex="9">
+                        <Label fx:id="propCreator2" prefHeight="17.0" prefWidth="200.0" text="Создатель:" GridPane.rowIndex="9">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="17.0" prefWidth="200.0" text="Дата создания:" GridPane.rowIndex="10">
+                        <Label fx:id="propCreationDate2" prefHeight="17.0" prefWidth="200.0" text="Дата создания:" GridPane.rowIndex="10">
                            <font>
                               <Font size="18.0" />
                            </font>

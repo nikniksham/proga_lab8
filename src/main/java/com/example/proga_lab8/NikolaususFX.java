@@ -47,11 +47,20 @@ public class NikolaususFX extends Application {
     public String result_of_delete;
     public String result_of_change;
     public String result_of_create;
-    public DateFormat fmt = DateFormat.getDateTimeInstance (DateFormat.SHORT, DateFormat.MEDIUM, Locale.FRANCE);
+    public DateFormat fmt = DateFormat.getDateTimeInstance (DateFormat.SHORT, DateFormat.MEDIUM, new Locale("ru", "RU"));
     public LocalizationHelper nikiLocal = new LocalizationHelper();
 
     public void main() {
         Application.launch();
+    }
+
+    public void setNewDateFormat(String loc) {
+        switch (loc) {
+            case "ee": fmt = DateFormat.getDateTimeInstance (DateFormat.SHORT, DateFormat.MEDIUM, new Locale("et", "EE"));
+            case "uk": fmt = DateFormat.getDateTimeInstance (DateFormat.SHORT, DateFormat.MEDIUM, new Locale("uk", "UA"));
+            case "es": fmt = DateFormat.getDateTimeInstance (DateFormat.SHORT, DateFormat.MEDIUM, new Locale("es", "SV"));
+            case "default": fmt = DateFormat.getDateTimeInstance (DateFormat.SHORT, DateFormat.MEDIUM, new Locale("ru", "RU"));
+        }
     }
 
     @Override
@@ -80,9 +89,8 @@ public class NikolaususFX extends Application {
             loginView = loader.load();
             LoginController loginController = loader.getController();
             loginController.setNikolaususFX(this);
-            loginController.loginLabel.setText(nikiLocal.getText("enterText"));
-            loginController.login_button.setText(nikiLocal.getText("loginButton"));
-            loginController.register_button.setText(nikiLocal.getText("registerButton"));
+
+            loginController.setLocalization();
 
             loginController.setMulti();
 
@@ -103,6 +111,9 @@ public class NikolaususFX extends Application {
             mainMenuController.setNikolaususFX(this);
             mainMenuController.nickname.setText(client.getLogin());
             mainMenuController.id.setText(client.getId());
+
+            mainMenuController.setLocalization();
+
             scene = new Scene(mainMenuView);
             primaryStage.setScene(scene);
             mainMenuController.drawLines();
@@ -139,6 +150,9 @@ public class NikolaususFX extends Application {
             tableView = loader.load();
             TableController tableController = loader.getController();
             tableController.setNikolaususFX(this);
+
+            tableController.setLocalization();
+
             scene = new Scene(tableView);
             primaryStage.setScene(scene);
             tableController.inputClimate.getItems().addAll("TROPICAL_SAVANNA", "HUMIDSUBTROPICAL", "STEPPE", "SUBARCTIC", "DESERT");
