@@ -5,14 +5,20 @@ import com.example.proga_lab8.controllers.localObject.CityAndGovernor;
 import com.example.proga_lab8.my_programm.enums.Climate;
 import com.example.proga_lab8.my_programm.enums.StandardOfLiving;
 import com.example.proga_lab8.my_programm.obj.City;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.text.DateFormat;
@@ -27,6 +33,22 @@ import java.util.ResourceBundle;
 
 public class TableController extends BaseController {
 
+    public Pane mapUI;
+    public Button back_button;
+    public Button delete_button2;
+    public TextField inputName;
+    public TextField inputArea;
+    public TextField inputCoordinates;
+    public TextField inputPopulation;
+    public TextField inputMetersAboveSeaLevel;
+    public TextField inputCarCode;
+    public ChoiceBox inputClimate;
+    public ChoiceBox inputStandardOfLiving;
+    public Label outputId;
+    public Label outputCreatorId;
+    public Label outputCreationDate;
+    public Button save_button;
+    public Pane editPane;
     @FXML private TableView<CityAndGovernor> tableView;
     @FXML private TableColumn<CityAndGovernor, Integer> city_idColumn;
     @FXML private TableColumn<CityAndGovernor, String> city_nameColumn;
@@ -64,9 +86,6 @@ public class TableController extends BaseController {
         climate_idColumn.setCellValueFactory(new PropertyValueFactory<CityAndGovernor, Integer>("climate_id"));
         standardOfLiving_idColumn.setCellValueFactory(new PropertyValueFactory<CityAndGovernor, Integer>("standardOfLiving_id"));
         creator_idColumn.setCellValueFactory(new PropertyValueFactory<CityAndGovernor, Integer>("creator_id"));
-        governor_idColumn.setCellValueFactory(new PropertyValueFactory<CityAndGovernor, Integer>("governor_id"));
-        governor_nameColumn.setCellValueFactory(new PropertyValueFactory<CityAndGovernor, String>("governor_name"));
-        birthdateColumn.setCellValueFactory(new PropertyValueFactory<CityAndGovernor, LocalDate>("birthdate"));
 
         tableView.setItems(this.getData());
     }
@@ -84,17 +103,42 @@ public class TableController extends BaseController {
         return data;
     }
 
-    public void create() {
+    public void onCreate() {
         System.out.println("Открыть окошко создания");
     }
 
-    public void change() {
+    public void onEdit() {
         if (tableView.getSelectionModel().getSelectedItem() != null) {
-            System.out.println("Открыть окошко создание города (но только на изменение и если есть права) " + tableView.getSelectionModel().getSelectedItem().getCity_id());
+            City city = nikolaususFX.getClient().get_city_by_id(tableView.getSelectionModel().getSelectedItem().getCity_id());
+
+            if (city != null) {
+                inputName.setText(city.getName());
+                outputId.setText(city.getId().toString());
+                inputArea.setText(Long.toString(city.getArea()));
+                inputCoordinates.setText(city.getCoordinates());
+                inputPopulation.setText(city.getPopulation().toString());
+                inputMetersAboveSeaLevel.setText(city.getMetersAboveSeaLevel().toString());
+                inputCarCode.setText(Integer.toString(city.getCarCode()));
+                inputClimate.setValue(city.getClimate().toString());
+                inputStandardOfLiving.setValue(city.getStandardOfLiving().toString());
+                outputCreatorId.setText(city.getCreator_id().toString());
+                outputCreationDate.setText(nikolaususFX.fmt.format(city.getCreationDate()));
+
+                Timeline timeline = new Timeline();
+                timeline.getKeyFrames().addAll(
+                        new KeyFrame(Duration.ZERO,
+                                new KeyValue(mapUI.layoutXProperty(), 0)
+                        ),
+                        new KeyFrame(new Duration(250),
+                                new KeyValue(mapUI.layoutXProperty(), -1280)
+                        )
+                );
+                timeline.play();
+            }
         }
     }
 
-    public void delete() {
+    public void onDelete() {
 //        System.out.println("Удалить город (но только если есть права) " + tableView.getSelectionModel().getSelectedItem().getCity_id());
         nikolaususFX.getClient().add_message("remove_key " + tableView.getSelectionModel().getSelectedItem().getCity_id());
         Date dateNow = new Date();
@@ -118,5 +162,54 @@ public class TableController extends BaseController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void onSave(ActionEvent event) {
+        int id = tableView.getSelectionModel().getSelectedItem().getCity_id();
+        City city = nikolaususFX.getClient().get_city_by_id(id);
+
+        if (city != null) {
+            String res = city.setNewData(inputName.getText(), inputCoordinates.getText(), inputArea.getText(), inputPopulation.getText(), inputMetersAboveSeaLevel.getText(), inputCarCode.getText(), inputClimate.getValue().toString(), inputStandardOfLiving.getValue().toString());
+            if (res.split(" ")[0].strip().equals("success")) {
+                res = "update " + id + " " + res.substring(res.split(" ")[0].length() + 1);
+                nikolaususFX.getClient().add_message(res);
+                Date dateNow = new Date();
+                while (nikolaususFX.result_of_change == null) {
+                    try {
+                        Thread.sleep(10);
+                    } catch (Exception e) {}
+
+                    if (new Date().getTime() - dateNow.getTime() > 1000) {
+                        nikolaususFX.result_of_change = "error " + "Сервер умер";
+                    }
+                }
+                this.callAlert("Результат", nikolaususFX.result_of_change.substring(nikolaususFX.result_of_change.split(" ")[0].length() + 1));
+                nikolaususFX.result_of_change = null;
+                nikolaususFX.showTable();
+            } else {
+                callAlert("Ошибка", res.substring(res.split(" ")[0].length() + 1));
+            }
+        } else {
+            callAlert("Ошибка", "Город с таким id был кем-то удалён");
+            this.nikolaususFX.showTable();
+        }
+    }
+
+    public void onBack(ActionEvent event) {
+        Timeline timeline = new Timeline();
+        timeline.getKeyFrames().addAll(
+                new KeyFrame(Duration.ZERO,
+                        new KeyValue(mapUI.layoutXProperty(), -1280)
+                ),
+                new KeyFrame(new Duration(250),
+                        new KeyValue(mapUI.layoutXProperty(), 0)
+                )
+        );
+        timeline.play();
+    }
+
+    public void onDelete2() {
+        this.onDelete();
+        this.nikolaususFX.showTable();
     }
 }

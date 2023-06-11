@@ -133,7 +133,10 @@ public class NikolaususFX extends Application {
             tableController.setNikolaususFX(this);
             scene = new Scene(tableView);
             primaryStage.setScene(scene);
+            tableController.inputClimate.getItems().addAll("TROPICAL_SAVANNA", "HUMIDSUBTROPICAL", "STEPPE", "SUBARCTIC", "DESERT");
+            tableController.inputStandardOfLiving.getItems().addAll("VERY_HIGH", "HIGH", "VERY_LOW", "ULTRA_LOW", "NIGHTMARE");
             tableController.loadTable();
+            tableController.editPane.setLayoutX(1315);
             cur_scene = "table";
             primaryStage.show();
         } catch (Exception e) {
