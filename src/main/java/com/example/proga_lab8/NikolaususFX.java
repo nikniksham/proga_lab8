@@ -76,8 +76,6 @@ public class NikolaususFX extends Application {
 
     public void showLogin() {
         try {
-//                System.out.println("?????????????????????????????????????");
-//                loginView = FXMLLoader.load(getClass().getResource("login.fxml"));
             FXMLLoader loader = new FXMLLoader(getClass().getResource("login.fxml"));
             loginView = loader.load();
             LoginController loginController = loader.getController();
@@ -86,16 +84,7 @@ public class NikolaususFX extends Application {
             loginController.login_button.setText(nikiLocal.getText("loginButton"));
             loginController.register_button.setText(nikiLocal.getText("registerButton"));
 
-            loginController.languageSelector.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
-                @Override
-                public ListCell<String> call(ListView<String> param) {
-                    return new ImageListCell();
-                }
-            });
-            loginController.languageSelector.setItems(FXCollections.observableArrayList("ru", "ee", "uk", "es"));
-            loginController.languageSelector.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-                System.out.println("Выбран элемент: " + newValue);
-            });
+            loginController.setMulti();
 
             scene = new Scene(loginView);
             primaryStage.setScene(scene);
@@ -185,35 +174,5 @@ class localClient implements Runnable {
         Client client = new Client(nikolaususFX);
         nikolaususFX.setClient(client);
         client.start(); // javascript:document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate = 3;
-    }
-}
-
-class ImageListCell extends ListCell<String> {
-    private ImageView imageView = new ImageView();
-
-    @Override
-    protected void updateItem(String item, boolean empty) {
-        super.updateItem(item, empty);
-
-        if (empty || item == null) {
-            setGraphic(null);
-        } else {
-            imageView.setImage(getImageForItem(item));
-            setGraphic(imageView);
-        }
-    }
-
-    private Image getImageForItem(String item) {
-        if (item.equals("ru")) {
-            return new Image(getClass().getResourceAsStream("/images/ru.png"));
-        } else if (item.equals("ee")) {
-            return new Image(getClass().getResourceAsStream("/images/ru.png"));
-        } else if (item.equals("uk")) {
-            return new Image(getClass().getResourceAsStream("/images/ru.png"));
-        } if (item.equals("es")) {
-            return new Image(getClass().getResourceAsStream("/images/ru.png"));
-        }
-
-        return null;
     }
 }
