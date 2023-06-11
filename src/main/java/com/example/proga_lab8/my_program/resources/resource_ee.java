@@ -6,9 +6,9 @@ public class resource_ee extends ListResourceBundle {
     @Override
     public Object[][] getContents() {
         return new Object[][] {
-                {"enterText", "Вход"},
-                {"registerButton", "Регистрация"},
-                {"loginButton", "Логин"},
+                {"enterText", "Sisend"},
+                {"registerButton", "Registreerimine"},
+                {"loginButton", "Login"},
         };
     }
 }

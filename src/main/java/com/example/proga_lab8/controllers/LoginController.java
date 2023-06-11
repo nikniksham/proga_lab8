@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelReader;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -24,18 +25,17 @@ public class LoginController extends BaseController{
     public ComboBox languageSelector;
 
     public void setMulti() {
-
-        Image defaultImage = new Image(getClass().getResourceAsStream("/images/ru.png"));
         languageSelector.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
             @Override
             public ListCell<String> call(ListView<String> param) {
-                return new ImageListCell(defaultImage);
+                return new ImageListCell(nikolaususFX.nikiLocal.locale);
             }
         });
-        languageSelector.setButtonCell(new ImageListCell(defaultImage));
+        languageSelector.setButtonCell(new ImageListCell(nikolaususFX.nikiLocal.locale));
         languageSelector.setItems(FXCollections.observableArrayList("ru", "ee", "uk", "es"));
         languageSelector.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println("Выбран элемент: " + newValue);
+            nikolaususFX.nikiLocal.locale = newValue.toString();
+            nikolaususFX.showLogin();
         });
     }
 
@@ -71,18 +71,16 @@ public class LoginController extends BaseController{
 
 class ImageListCell extends ListCell<String> {
     private ImageView imageView = new ImageView();
-    private Image defaultImage;
+    private String defEl;
 
-    public ImageListCell(Image image) {
-        defaultImage = image;
-        imageView.setImage(defaultImage);
+    public ImageListCell(String loc) {
+        defEl = loc;
     }
     @Override
     protected void updateItem(String item, boolean empty) {
         super.updateItem(item, empty);
         if (empty || item == null) {
-            imageView.setImage(defaultImage);
-            setGraphic(imageView);
+            this.updateItem(defEl, false);
         } else {
             imageView.setImage(getImageForItem(item));
             setGraphic(imageView);
