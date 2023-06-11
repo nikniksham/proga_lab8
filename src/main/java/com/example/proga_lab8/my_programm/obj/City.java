@@ -69,7 +69,7 @@ public class City {
                 throw new RuntimeException("Код автомобиля должен быть в диапозоне [1; 1000]");
             }
             Climate.getClimateByString(climate_p);
-            StandardOfLiving.getStandardById(standardOfLiving_p);
+            StandardOfLiving.getStandardByString(standardOfLiving_p);
 
             this.setName(name_p);
             this.setCoordinates(coordinates_p);
@@ -78,7 +78,7 @@ public class City {
             this.setMetersAboveSeaLevel(Integer.parseInt(metersAboveSeaLevel_p));
             this.setCarCode(Integer.parseInt(carCode_p));
             this.setClimate(Climate.getClimateByString(climate_p));
-            this.setStandardOfLiving(StandardOfLiving.getStandardById(standardOfLiving_p));
+            this.setStandardOfLiving(StandardOfLiving.getStandardByString(standardOfLiving_p));
 
         } catch (Exception e) {
             return "error " + e.getMessage();

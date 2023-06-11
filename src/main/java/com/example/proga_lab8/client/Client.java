@@ -119,6 +119,8 @@ public class Client {
         if (result.equals("ok")) {
             this.login = login;
             this.password = codeToSHA256(password);
+            this.userId = UserApi.getUserId(login);
+            this.userStatus = UserApi.getUserStatus(login);
         }
         return result;
     }
@@ -230,6 +232,11 @@ public class Client {
             }
         }
     }
+
+    public void stop() {
+        this.run = false;
+    }
+
     private static String wait_new_message(BufferedReader reader) {
         try {
             StringBuilder answer = new StringBuilder();

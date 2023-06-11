@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.*;
 import java.net.Socket;
@@ -46,7 +47,7 @@ public class NikolaususFX extends Application {
     public String result_of_create;
     public DateFormat fmt = DateFormat.getDateTimeInstance (DateFormat.SHORT, DateFormat.MEDIUM, Locale.FRANCE);
 
-    public static void main(String[] args) {
+    public void main() {
         Application.launch();
     }
 
@@ -142,6 +143,12 @@ public class NikolaususFX extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void stop(){
+        System.out.println("А на сегодня всё");
+        System.exit(0);
     }
 
     public Client getClient() {

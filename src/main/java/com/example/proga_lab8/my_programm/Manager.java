@@ -349,7 +349,7 @@ public class Manager {
         try {
             city = new City(newid, name, coordinates, area, population, MASL, carCode, climate, standardOfLiving, gover, userId);
         } catch (Exception e) {
-            arr.add(e.getMessage());
+            arr.add("error " + e.getMessage());
             return null;
         }
 //        System.out.println(city);

@@ -73,6 +73,7 @@ public class TableController extends BaseController {
     private Button delete_button;
     @FXML
     private Button mainMenu_button;
+    private boolean needCreate;
 
     public void loadTable() {
         city_idColumn.setCellValueFactory(new PropertyValueFactory<CityAndGovernor, Integer>("city_id"));
@@ -104,10 +105,24 @@ public class TableController extends BaseController {
     }
 
     public void onCreate() {
-        System.out.println("Открыть окошко создания");
+        needCreate = true;
+        outputId.setText("?");
+        outputCreatorId.setText(nikolaususFX.getClient().getId());
+        outputCreationDate.setText("?");
+        Timeline timeline = new Timeline();
+        timeline.getKeyFrames().addAll(
+                new KeyFrame(Duration.ZERO,
+                        new KeyValue(mapUI.layoutXProperty(), 0)
+                ),
+                new KeyFrame(new Duration(250),
+                        new KeyValue(mapUI.layoutXProperty(), -1280)
+                )
+        );
+        timeline.play();
     }
 
     public void onEdit() {
+        needCreate = false;
         if (tableView.getSelectionModel().getSelectedItem() != null) {
             City city = nikolaususFX.getClient().get_city_by_id(tableView.getSelectionModel().getSelectedItem().getCity_id());
 
@@ -165,33 +180,55 @@ public class TableController extends BaseController {
     }
 
     public void onSave(ActionEvent event) {
-        int id = tableView.getSelectionModel().getSelectedItem().getCity_id();
-        City city = nikolaususFX.getClient().get_city_by_id(id);
+        if (!needCreate) {
+            int id = tableView.getSelectionModel().getSelectedItem().getCity_id();
+            City city = nikolaususFX.getClient().get_city_by_id(id);
 
-        if (city != null) {
-            String res = city.setNewData(inputName.getText(), inputCoordinates.getText(), inputArea.getText(), inputPopulation.getText(), inputMetersAboveSeaLevel.getText(), inputCarCode.getText(), inputClimate.getValue().toString(), inputStandardOfLiving.getValue().toString());
-            if (res.split(" ")[0].strip().equals("success")) {
-                res = "update " + id + " " + res.substring(res.split(" ")[0].length() + 1);
-                nikolaususFX.getClient().add_message(res);
-                Date dateNow = new Date();
-                while (nikolaususFX.result_of_change == null) {
-                    try {
-                        Thread.sleep(10);
-                    } catch (Exception e) {}
+            if (city != null) {
+                String res = city.setNewData(inputName.getText(), inputCoordinates.getText(), inputArea.getText(), inputPopulation.getText(), inputMetersAboveSeaLevel.getText(), inputCarCode.getText(), inputClimate.getValue().toString(), inputStandardOfLiving.getValue().toString());
+                if (res.split(" ")[0].strip().equals("success")) {
+                    res = "update " + id + " " + res.substring(res.split(" ")[0].length() + 1);
+                    nikolaususFX.getClient().add_message(res);
+                    Date dateNow = new Date();
+                    while (nikolaususFX.result_of_change == null) {
+                        try {
+                            Thread.sleep(10);
+                        } catch (Exception e) {
+                        }
 
-                    if (new Date().getTime() - dateNow.getTime() > 1000) {
-                        nikolaususFX.result_of_change = "error " + "Сервер умер";
+                        if (new Date().getTime() - dateNow.getTime() > 1000) {
+                            nikolaususFX.result_of_change = "error " + "Сервер умер";
+                        }
                     }
+                    this.callAlert("Результат", nikolaususFX.result_of_change.substring(nikolaususFX.result_of_change.split(" ")[0].length() + 1));
+                    nikolaususFX.result_of_change = null;
+                    nikolaususFX.showTable();
+                } else {
+                    callAlert("Ошибка", res.substring(res.split(" ")[0].length() + 1));
                 }
-                this.callAlert("Результат", nikolaususFX.result_of_change.substring(nikolaususFX.result_of_change.split(" ")[0].length() + 1));
-                nikolaususFX.result_of_change = null;
-                nikolaususFX.showTable();
             } else {
-                callAlert("Ошибка", res.substring(res.split(" ")[0].length() + 1));
+                callAlert("Ошибка", "Город с таким id был кем-то удалён");
+                this.nikolaususFX.showTable();
             }
         } else {
-            callAlert("Ошибка", "Город с таким id был кем-то удалён");
-            this.nikolaususFX.showTable();
+            // create  {"lafs", [10, 10], 124214, 2142, 22, 41, 1, 1}
+            nikolaususFX.getClient().add_message("create {\"" + inputName.getText() + "\", [" + inputCoordinates.getText() + "], " + inputArea.getText() + ", " +
+                    inputPopulation.getText() + ", " + inputMetersAboveSeaLevel.getText() + ", " + inputCarCode.getText() + ", " +
+                    Climate.getIdByName(Climate.getClimateByString(inputClimate.getValue().toString())) + ", " +
+                    StandardOfLiving.getIdByName(StandardOfLiving.getStandardByString(inputStandardOfLiving.getValue().toString())) + "}");
+            Date dateNow = new Date();
+            while (nikolaususFX.result_of_create == null) {
+                try {
+                    Thread.sleep(10);
+                } catch (Exception e) {}
+
+                if (new Date().getTime() - dateNow.getTime() > 1000) {
+                    nikolaususFX.result_of_create = "error " + "Сервер умер";
+                }
+            }
+            this.callAlert("Результат", nikolaususFX.result_of_create.substring(nikolaususFX.result_of_create.split(" ")[0].length() + 1));
+            nikolaususFX.result_of_create = null;
+            nikolaususFX.showTable();
         }
     }
 

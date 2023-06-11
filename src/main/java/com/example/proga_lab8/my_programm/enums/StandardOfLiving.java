@@ -38,7 +38,7 @@ public enum StandardOfLiving {
         }
     }
 
-    public static StandardOfLiving getStandardById(String name) {
+    public static StandardOfLiving getStandardByString(String name) {
         switch (name) {
             case "VERY_HIGH": return VERY_HIGH;
             case "HIGH": return HIGH;
