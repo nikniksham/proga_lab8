@@ -1,11 +1,11 @@
 package com.example.proga_lab8.client;
 
 import com.example.proga_lab8.NikolaususFX;
-import com.example.proga_lab8.my_programm.CustomFileReader;
-import com.example.proga_lab8.my_programm.enums.Climate;
-import com.example.proga_lab8.my_programm.enums.StandardOfLiving;
-import com.example.proga_lab8.my_programm.obj.City;
-import com.example.proga_lab8.my_programm.obj.Human;
+import com.example.proga_lab8.my_program.CustomFileReader;
+import com.example.proga_lab8.my_program.enums.Climate;
+import com.example.proga_lab8.my_program.enums.StandardOfLiving;
+import com.example.proga_lab8.my_program.obj.City;
+import com.example.proga_lab8.my_program.obj.Human;
 import com.example.proga_lab8.server.api.UserApi;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;

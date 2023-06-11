@@ -1,6 +1,6 @@
 package com.example.proga_lab8.server.api;
 
-import com.example.proga_lab8.my_programm.obj.Human;
+import com.example.proga_lab8.my_program.obj.Human;
 
 import java.sql.DriverManager;
 import java.sql.Timestamp;

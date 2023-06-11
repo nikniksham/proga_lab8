@@ -4,21 +4,23 @@ import com.example.proga_lab8.client.Client;
 import com.example.proga_lab8.controllers.LoginController;
 import com.example.proga_lab8.controllers.MainMenuController;
 import com.example.proga_lab8.controllers.TableController;
+import com.example.proga_lab8.my_program.LocalizationHelper;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
+import javafx.util.Callback;
 
 import java.io.*;
 import java.net.Socket;
 import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -46,6 +48,7 @@ public class NikolaususFX extends Application {
     public String result_of_change;
     public String result_of_create;
     public DateFormat fmt = DateFormat.getDateTimeInstance (DateFormat.SHORT, DateFormat.MEDIUM, Locale.FRANCE);
+    public LocalizationHelper nikiLocal = new LocalizationHelper();
 
     public void main() {
         Application.launch();
@@ -79,6 +82,21 @@ public class NikolaususFX extends Application {
             loginView = loader.load();
             LoginController loginController = loader.getController();
             loginController.setNikolaususFX(this);
+            loginController.loginLabel.setText(nikiLocal.getText("enterText"));
+            loginController.login_button.setText(nikiLocal.getText("loginButton"));
+            loginController.register_button.setText(nikiLocal.getText("registerButton"));
+
+            loginController.languageSelector.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
+                @Override
+                public ListCell<String> call(ListView<String> param) {
+                    return new ImageListCell();
+                }
+            });
+            loginController.languageSelector.setItems(FXCollections.observableArrayList("ru", "ee", "uk", "es"));
+            loginController.languageSelector.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                System.out.println("Выбран элемент: " + newValue);
+            });
+
             scene = new Scene(loginView);
             primaryStage.setScene(scene);
             cur_scene = "login";
@@ -167,5 +185,35 @@ class localClient implements Runnable {
         Client client = new Client(nikolaususFX);
         nikolaususFX.setClient(client);
         client.start(); // javascript:document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate = 3;
+    }
+}
+
+class ImageListCell extends ListCell<String> {
+    private ImageView imageView = new ImageView();
+
+    @Override
+    protected void updateItem(String item, boolean empty) {
+        super.updateItem(item, empty);
+
+        if (empty || item == null) {
+            setGraphic(null);
+        } else {
+            imageView.setImage(getImageForItem(item));
+            setGraphic(imageView);
+        }
+    }
+
+    private Image getImageForItem(String item) {
+        if (item.equals("ru")) {
+            return new Image(getClass().getResourceAsStream("/images/ru.png"));
+        } else if (item.equals("ee")) {
+            return new Image(getClass().getResourceAsStream("/images/ru.png"));
+        } else if (item.equals("uk")) {
+            return new Image(getClass().getResourceAsStream("/images/ru.png"));
+        } if (item.equals("es")) {
+            return new Image(getClass().getResourceAsStream("/images/ru.png"));
+        }
+
+        return null;
     }
 }

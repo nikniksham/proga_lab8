@@ -1,8 +1,7 @@
-package com.example.proga_lab8.my_programm.obj;
+package com.example.proga_lab8.my_program.obj;
 
-import com.example.proga_lab8.Main;
-import com.example.proga_lab8.my_programm.enums.Climate;
-import com.example.proga_lab8.my_programm.enums.StandardOfLiving;
+import com.example.proga_lab8.my_program.enums.Climate;
+import com.example.proga_lab8.my_program.enums.StandardOfLiving;
 import javafx.scene.paint.Color;
 
 import java.sql.Timestamp;

@@ -1,4 +1,4 @@
-package com.example.proga_lab8.my_programm.obj;
+package com.example.proga_lab8.my_program.obj;
 
 import java.sql.Timestamp;
 

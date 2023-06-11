@@ -1,4 +1,4 @@
-package com.example.proga_lab8.my_programm;
+package com.example.proga_lab8.my_program;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

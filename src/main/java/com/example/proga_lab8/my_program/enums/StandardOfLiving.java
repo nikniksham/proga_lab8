@@ -1,4 +1,4 @@
-package com.example.proga_lab8.my_programm.enums;
+package com.example.proga_lab8.my_program.enums;
 
 public enum StandardOfLiving {
     VERY_HIGH,

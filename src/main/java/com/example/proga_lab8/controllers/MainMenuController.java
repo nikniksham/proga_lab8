@@ -1,45 +1,23 @@
 package com.example.proga_lab8.controllers;
 
-import com.example.proga_lab8.NikolaususFX;
-import com.example.proga_lab8.controllers.localObject.CityAndGovernor;
-import com.example.proga_lab8.my_programm.enums.Climate;
-import com.example.proga_lab8.my_programm.enums.StandardOfLiving;
-import com.example.proga_lab8.my_programm.obj.City;
+import com.example.proga_lab8.my_program.obj.City;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.BoxBlur;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.LineTo;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.text.DateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.Date;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-
-import static java.lang.Math.random;
 
 public class MainMenuController extends BaseController {
 

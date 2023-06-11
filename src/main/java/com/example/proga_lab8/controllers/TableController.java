@@ -1,35 +1,24 @@
 package com.example.proga_lab8.controllers;
 
-import com.example.proga_lab8.NikolaususFX;
 import com.example.proga_lab8.controllers.localObject.CityAndGovernor;
-import com.example.proga_lab8.my_programm.enums.Climate;
-import com.example.proga_lab8.my_programm.enums.StandardOfLiving;
-import com.example.proga_lab8.my_programm.obj.City;
+import com.example.proga_lab8.my_program.enums.Climate;
+import com.example.proga_lab8.my_program.enums.StandardOfLiving;
+import com.example.proga_lab8.my_program.obj.City;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
-import java.net.URL;
-import java.text.DateFormat;
 import java.time.LocalDate;
-import java.time.Month;
-import java.time.Period;
-import java.time.ZoneId;
 import java.util.Date;
-import java.util.Locale;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 public class TableController extends BaseController {
 

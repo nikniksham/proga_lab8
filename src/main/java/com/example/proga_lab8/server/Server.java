@@ -1,8 +1,7 @@
 package com.example.proga_lab8.server;
 
-import com.example.proga_lab8.my_programm.CustomFileReader;
-import com.example.proga_lab8.my_programm.Manager;
-import com.example.proga_lab8.server.api.BaseApi;
+import com.example.proga_lab8.my_program.CustomFileReader;
+import com.example.proga_lab8.my_program.Manager;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import com.example.proga_lab8.server.api.UserApi;
