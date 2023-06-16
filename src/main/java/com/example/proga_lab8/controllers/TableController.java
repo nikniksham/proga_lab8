@@ -50,6 +50,7 @@ public class TableController extends BaseController {
     public Label propCreator;
     public Label propCreationDate;
     public Label labelCity;
+    public Button saveTable_button;
     @FXML private TableView<CityAndGovernor> tableView;
     @FXML private TableColumn<CityAndGovernor, Integer> city_idColumn;
     @FXML private TableColumn<CityAndGovernor, String> city_nameColumn;
@@ -276,5 +277,26 @@ public class TableController extends BaseController {
         change_button.setText(nikolaususFX.nikiLocal.getText("buttonEdit"));
         mainMenu_button.setText(nikolaususFX.nikiLocal.getText("buttonToMainMenu"));
         create_button.setText(nikolaususFX.nikiLocal.getText("buttonCreate"));
+    }
+
+    public void saveTable() {
+        if (nikolaususFX.getClient().userStatus > 0) {
+            try {
+                nikolaususFX.getClient().add_message("save");
+                Date dateNow = new Date();
+                while (nikolaususFX.result_of_saveTable == null) {
+                    try {
+                        Thread.sleep(10);
+                    } catch (Exception e) {}
+
+                    if (new Date().getTime() - dateNow.getTime() > 1000) {
+                        nikolaususFX.result_of_saveTable = "error " + "Сервер умер";
+                    }
+                }
+                this.callAlert("Ответ", nikolaususFX.result_of_saveTable.substring(nikolaususFX.result_of_saveTable.split(" ")[0].length() + 1));
+                nikolaususFX.result_of_saveTable = null;
+                this.loadTable();
+            } catch (Exception e) {}
+        }
     }
 }

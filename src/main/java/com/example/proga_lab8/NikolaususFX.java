@@ -45,6 +45,7 @@ public class NikolaususFX extends Application {
     public Scene scene;
     public boolean need_to_update = true;
     public String result_of_delete;
+    public String result_of_saveTable;
     public String result_of_change;
     public String result_of_create;
     public DateFormat fmt = DateFormat.getDateTimeInstance (DateFormat.SHORT, DateFormat.MEDIUM, new Locale("ru", "RU"));
@@ -159,6 +160,7 @@ public class NikolaususFX extends Application {
             tableController.inputStandardOfLiving.getItems().addAll("VERY_HIGH", "HIGH", "VERY_LOW", "ULTRA_LOW", "NIGHTMARE");
             tableController.loadTable();
             tableController.editPane.setLayoutX(1315);
+            tableController.saveTable_button.setVisible(client.userStatus > 0);
             cur_scene = "table";
             primaryStage.show();
         } catch (Exception e) {

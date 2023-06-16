@@ -217,6 +217,8 @@ public class Client {
                                     } else if (messages[messages.length - 1].strip().equals("update")) {
                                         nikolaususFX.result_of_change = answer.substring(0, answer.length() - 8);
                                         needUpdate = true;
+                                    } else if (messages[messages.length - 1].strip().equals("save")) {
+                                        nikolaususFX.result_of_saveTable = answer.substring(0, answer.length() - 6);
                                     }
                                 }
 
