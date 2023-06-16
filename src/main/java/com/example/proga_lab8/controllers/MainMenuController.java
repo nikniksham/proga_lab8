@@ -175,10 +175,10 @@ public class MainMenuController extends BaseController {
 
             inputName.setText(city.getName());
             outputId.setText(city.getId().toString());
-            inputArea.setText(Long.toString(city.getArea()));
+            inputArea.setText(nikolaususFX.nbr.format(city.getArea()));
             inputCoordinates.setText(city.getCoordinates());
-            inputPopulation.setText(city.getPopulation().toString());
-            inputMetersAboveSeaLevel.setText(city.getMetersAboveSeaLevel().toString());
+            inputPopulation.setText(nikolaususFX.nbr.format(city.getPopulation()));
+            inputMetersAboveSeaLevel.setText(nikolaususFX.nbr.format(city.getMetersAboveSeaLevel()));
             inputCarCode.setText(Integer.toString(city.getCarCode()));
             inputClimate.setValue(city.getClimate().toString());
             inputStandardOfLiving.setValue(city.getStandardOfLiving().toString());
@@ -308,10 +308,10 @@ public class MainMenuController extends BaseController {
 
         city_name.setText(city.getName());
         city_id.setText(city.getId().toString());
-        city_area.setText(Long.toString(city.getArea()));
+        city_area.setText(nikolaususFX.nbr.format(city.getArea()));
         city_coordinates.setText(city.getCoordinates());
-        city_population.setText(city.getPopulation().toString());
-        city_metersAboveSeaLevel.setText(city.getMetersAboveSeaLevel().toString());
+        city_population.setText(nikolaususFX.nbr.format(city.getPopulation()));
+        city_metersAboveSeaLevel.setText(nikolaususFX.nbr.format(city.getMetersAboveSeaLevel()));
         city_carCode.setText(Integer.toString(city.getCarCode()));
         city_climate.setText(city.getClimate().toString());
         city_standardOfLiving.setText(city.getStandardOfLiving().toString());

@@ -133,10 +133,10 @@ public class TableController extends BaseController {
             if (city != null) {
                 inputName.setText(city.getName());
                 outputId.setText(city.getId().toString());
-                inputArea.setText(Long.toString(city.getArea()));
+                inputArea.setText(nikolaususFX.nbr.format(city.getArea()));
                 inputCoordinates.setText(city.getCoordinates());
-                inputPopulation.setText(city.getPopulation().toString());
-                inputMetersAboveSeaLevel.setText(city.getMetersAboveSeaLevel().toString());
+                inputPopulation.setText(nikolaususFX.nbr.format(city.getPopulation()));
+                inputMetersAboveSeaLevel.setText(nikolaususFX.nbr.format(city.getMetersAboveSeaLevel()));
                 inputCarCode.setText(Integer.toString(city.getCarCode()));
                 inputClimate.setValue(city.getClimate().toString());
                 inputStandardOfLiving.setValue(city.getStandardOfLiving().toString());

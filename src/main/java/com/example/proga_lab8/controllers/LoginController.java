@@ -36,6 +36,7 @@ public class LoginController extends BaseController{
         languageSelector.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             nikolaususFX.nikiLocal.locale = newValue.toString();
             nikolaususFX.setNewDateFormat(newValue.toString());
+            nikolaususFX.setNewNumberFormat(newValue.toString());
             nikolaususFX.showLogin();
         });
     }

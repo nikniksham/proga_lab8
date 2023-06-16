@@ -20,6 +20,7 @@ import javafx.util.Callback;
 import java.io.*;
 import java.net.Socket;
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.util.*;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -49,6 +50,7 @@ public class NikolaususFX extends Application {
     public String result_of_change;
     public String result_of_create;
     public DateFormat fmt = DateFormat.getDateTimeInstance (DateFormat.SHORT, DateFormat.MEDIUM, new Locale("ru", "RU"));
+    public NumberFormat nbr = NumberFormat.getInstance(new Locale("ru", "RU"));
     public LocalizationHelper nikiLocal = new LocalizationHelper();
 
     public void main() {
@@ -61,6 +63,15 @@ public class NikolaususFX extends Application {
             case "uk": fmt = DateFormat.getDateTimeInstance (DateFormat.SHORT, DateFormat.MEDIUM, new Locale("uk", "UA"));
             case "es": fmt = DateFormat.getDateTimeInstance (DateFormat.SHORT, DateFormat.MEDIUM, new Locale("es", "SV"));
             case "default": fmt = DateFormat.getDateTimeInstance (DateFormat.SHORT, DateFormat.MEDIUM, new Locale("ru", "RU"));
+        }
+    }
+
+    public void setNewNumberFormat(String loc) {
+        switch (loc) {
+            case "ee": nbr = NumberFormat.getInstance(new Locale("et", "EE"));
+            case "uk": nbr = NumberFormat.getInstance(new Locale("uk", "UA"));
+            case "es": nbr = NumberFormat.getInstance(new Locale("es", "SV"));
+            case "default": nbr = NumberFormat.getInstance(new Locale("ru", "RU"));
         }
     }
 
